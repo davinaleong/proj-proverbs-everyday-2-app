@@ -1,10 +1,13 @@
 import React from "react"
+import dayjs from "dayjs"
 
 import FooterComponent from "./components/footer.component"
 import HeaderComponent from "./components/header.component."
+import IndexPage from "./pages/index.page.component"
 
-import "./styles/main.scss"
+import config from "./data/config.data"
 import gear from "./images/gear-solid-white.svg"
+import "./styles/main.scss"
 
 export default class App extends React.Component {
   constructor(props) {
@@ -15,7 +18,24 @@ export default class App extends React.Component {
         previous: "",
         current: this.props.pageStates.INDEX,
       },
+      translations: [],
+      translation: "",
+      chapters: [],
+      chapter: "",
     }
+  }
+
+  componentDidMount = () => {
+    const translationsApi = `${config.api}translations/`
+    // const chaptersApi = `${translationsApi}kjv/chapters`
+
+    // console.log(translationsApi)
+    // console.log(chaptersApi)
+    // fetch(translationsApi)
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     console.log(data)
+    //   })
   }
 
   setPage = (next) => {
@@ -26,10 +46,6 @@ export default class App extends React.Component {
         previous: previous,
         current: next,
       },
-      translations: [],
-      translation: "",
-      chapters: [],
-      chapter: 0
     })
   }
 
@@ -53,6 +69,16 @@ export default class App extends React.Component {
     this.setPage(this.props.pageStates.SETTINGS)
   }
 
+  renderPage = () => {
+    switch(this.state.page.current) {
+      case this.props.pageStates.INDEX:
+        return <IndexPage />
+
+      default:
+        return null
+    }
+  }
+
   render = () => {
     return (
       <main className="main-grid">
@@ -63,7 +89,7 @@ export default class App extends React.Component {
           gotoChaptersPage={this.gotoChaptersPage}
         />
 
-        <div className="content">[Content]</div>
+        <div className="content container | p-y-400">{this.renderPage()}</div>
 
         <FooterComponent />
 
