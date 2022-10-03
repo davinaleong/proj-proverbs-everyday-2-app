@@ -26,6 +26,10 @@ export default class App extends React.Component {
         previous: previous,
         current: next,
       },
+      translations: [],
+      translation: "",
+      chapters: [],
+      chapter: 0
     })
   }
 
