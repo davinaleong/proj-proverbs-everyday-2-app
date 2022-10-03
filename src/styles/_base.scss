@@ -91,6 +91,7 @@ body {
   --clr-form-input-text: #{$clr-gray-900};
   --clr-form-input-bg: #{$clr-gray-50};
 
+  position: relative;
   font-size: var(--fsize-base);
   font-family: var(--ff-primary);
   font-weight: #{$fw-regular};
@@ -276,7 +277,7 @@ a:where(:visited, :active) {
   text-decoration: none;
 }
 
-a:where(:hover, :focus-within) {
+a:where(:hover, :focus, :focus-within) {
   color: var(--clr-action-dark);
   transition: all 0.3s ease-in-out;
 }
@@ -287,10 +288,28 @@ a:where(:hover, :focus-within) {
 
 .btn {
   display: flex;
+  justify-content: center;
   align-items: center;
   border: none;
   font-size: size(300);
   transition: all 0.3s ease-in-out;
+}
+
+.btn-fixed {
+  --btn-fixed-size: 4em;
+
+  position: fixed;
+  width: var(--btn-fixed-size);
+  height: var(--btn-fixed-size);
+  right: size(400);
+  bottom: size(400);
+  box-shadow: box-shadow(400);
+  border-radius: 50%;
+}
+
+.btn-fixed img {
+  width: calc(var(--btn-fixed-size) - 2em);
+  height: calc(var(--btn-fixed-size) - 2em);
 }
 
 .btn-link {
@@ -300,8 +319,16 @@ a:where(:hover, :focus-within) {
   padding: 0;
 }
 
-.btn-link:where(:hover, :focus-within) {
+.btn-link:where(:hover, :focus, :focus-within) {
   color: var(--clr-action-dark);
+}
+
+.btn-action {
+  background-color: var(--clr-action);
+}
+
+.btn-action:where(:hover, :focus, :focus-within) {
+  background-color: var(--clr-action-dark);
 }
 
 .btn-card {
@@ -313,7 +340,7 @@ a:where(:hover, :focus-within) {
   flex-direction: column;
 }
 
-.btn-card:where(:hover, :focus-within) {
+.btn-card:where(:hover, :focus, :focus-within) {
   color: var(--clr-card-text-hover);
   background-color: var(--clr-card-bg-hover);
   border-color: var(--clr-card-border-hover);
@@ -327,7 +354,7 @@ a:where(:hover, :focus-within) {
   box-shadow: box-shadow(400);
 }
 
-.btn-primary:where(:hover, :focus-within) {
+.btn-primary:where(:hover, :focus, :focus-within) {
   background-color: #{$clr-blue-600};
 }
 
@@ -339,7 +366,7 @@ a:where(:hover, :focus-within) {
   box-shadow: box-shadow(400);
 }
 
-.btn-secondary:where(:hover, :focus-within) {
+.btn-secondary:where(:hover, :focus, :focus-within) {
   background-color: #{$clr-gray-600};
 }
 
@@ -387,12 +414,16 @@ a:where(:hover, :focus-within) {
   font-size: size(600);
 }
 
-[data-element="close"] {
+[data-element="collapse-menu"] {
   display: none;
   position: fixed;
   top: spacer(400);
   right: spacer(400);
   z-index: 1;
+}
+
+[data-element="expand-menu"] {
+  display: none;
 }
 
 .nav-list {
@@ -407,7 +438,7 @@ a:where(:hover, :focus-within) {
   font-style: italic;
 }
 
-@media (max-width: 37.49em) {
+@media (max-width: 37.5em) {
   .main-header-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -429,7 +460,7 @@ a:where(:hover, :focus-within) {
     justify-self: start;
   }
 
-  [data-open] .main-nav-left {
+  [data-open=true] .main-nav-left {
     display: block;
     position: fixed;
     z-index: 1;
@@ -440,12 +471,16 @@ a:where(:hover, :focus-within) {
     background-color: var(--clr-header-bg);
   }
 
-  [data-open] .main-nav-left .nav-list {
+  [data-open=true] .main-nav-left .nav-list {
     flex-direction: column;
     align-items: center;
   }
 
-  [data-open] [data-element="close"] {
+  [data-open=true] [data-element="collapse-menu"] {
+    display: inline-flex;
+  }
+
+  [data-element="expand-menu"] {
     display: inline-flex;
   }
 }

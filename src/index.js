@@ -4,10 +4,13 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import menuStates from './data/menu.states.data'
+import pageStates from './data/page.states.data'
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <App menuStates={menuStates} pageStates={pageStates} />
   </React.StrictMode>
 );
 

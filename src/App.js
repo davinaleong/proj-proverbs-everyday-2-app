@@ -1,15 +1,38 @@
+import React from "react"
+import FooterComponent from "./components/footer.component"
+import HeaderComponent from "./components/header.component."
 import "./styles/main.scss"
 
-function App() {
-  return (
-    <main className="main-grid">
-      <header>[Header]</header>
+export default class App extends React.Component {
+  constructor(props) {
+    super(props)
 
-      <div>[Content]</div>
+    this.state = {
+      page: {
+        previous: "",
+        current: "",
+      },
+    }
+  }
 
-      <footer>[Footer]</footer>
-    </main>
-  )
+  setPage = ({ previous, current }) => {
+    this.setState({
+      page: {
+        previous: previous,
+        current: current,
+      },
+    })
+  }
+
+  render = () => {
+    return (
+      <main className="main-grid">
+        <HeaderComponent />
+
+        <div className="content">[Content]</div>
+
+        <FooterComponent />
+      </main>
+    )
+  }
 }
-
-export default App
