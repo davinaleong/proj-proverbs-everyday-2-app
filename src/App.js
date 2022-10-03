@@ -10,7 +10,7 @@ export default class App extends React.Component {
     this.state = {
       page: {
         previous: "",
-        current: "",
+        current: this.props.pageStates.INDEX,
       },
     }
   }
