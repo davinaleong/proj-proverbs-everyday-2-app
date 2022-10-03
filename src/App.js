@@ -52,13 +52,22 @@ export default class App extends React.Component {
   render = () => {
     return (
       <main className="main-grid">
-        <HeaderComponent gotoBack={this.gotoBack} />
+        <HeaderComponent
+          gotoBack={this.gotoBack}
+          gotoIndexPage={this.gotoIndexPage}
+          gotoTranslationsPage={this.gotoTranslationsPage}
+          gotoChaptersPage={this.gotoChaptersPage}
+        />
 
         <div className="content">[Content]</div>
 
         <FooterComponent />
 
-        <button type="button" className="btn btn-action btn-fixed" onClick={this.gotoSettingsPage}>
+        <button
+          type="button"
+          className="btn btn-action btn-fixed"
+          onClick={this.gotoSettingsPage}
+        >
           <img src={gear} alt="Settings" />
         </button>
       </main>

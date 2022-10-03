@@ -1,8 +1,9 @@
 import React, { useState } from "react"
-import menuStates from "../data/menu.states.data"
+import dayjs from "dayjs"
 
-const HeaderComponent = ({ gotoBack }) => {
+const HeaderComponent = ({ gotoBack, gotoIndexPage, gotoTranslationsPage, gotoChaptersPage }) => {
   const [expandMenu, setExpandMenu] = useState(false)
+  const today = dayjs().format("D MMM YYYY")
 
   return (
     <header className="main-header" data-open={expandMenu}>
@@ -21,17 +22,17 @@ const HeaderComponent = ({ gotoBack }) => {
                 </button>
               </li>
               <li className="nav-item">
-                <button className="btn btn-link" type="button">
+                <button className="btn btn-link" type="button" onClick={gotoIndexPage}>
                   Today's Proverb
                 </button>
               </li>
               <li className="nav-item">
-                <button className="btn btn-link" type="button">
+                <button className="btn btn-link" type="button" onClick={gotoTranslationsPage}>
                   Translations
                 </button>
               </li>
               <li className="nav-item">
-                <button className="btn btn-link" type="button">
+                <button className="btn btn-link" type="button" onClick={gotoChaptersPage}>
                   View Chapters
                 </button>
               </li>
@@ -60,7 +61,7 @@ const HeaderComponent = ({ gotoBack }) => {
             </ul>
           </nav>
 
-          <p className="main-header-date">Today: 29 Sep 2022</p>
+          <p className="main-header-date">Today: {today}</p>
         </div>
       </div>
     </header>
