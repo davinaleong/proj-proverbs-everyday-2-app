@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import menuStates from "../data/menu.states.data"
 
-const HeaderComponent = (props) => {
+const HeaderComponent = ({ gotoBack }) => {
   const [expandMenu, setExpandMenu] = useState(false)
 
   return (
@@ -43,7 +43,7 @@ const HeaderComponent = (props) => {
           <nav className="main-nav main-nav-right">
             <ul className="nav-list" role="list">
               <li className="nav-item">
-                <button className="btn btn-link" type="button">
+                <button className="btn btn-link" type="button" onClick={gotoBack}>
                   Back
                 </button>
               </li>

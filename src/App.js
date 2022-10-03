@@ -1,7 +1,10 @@
 import React from "react"
+
 import FooterComponent from "./components/footer.component"
 import HeaderComponent from "./components/header.component."
+
 import "./styles/main.scss"
+import gear from "./images/gear-solid-white.svg"
 
 export default class App extends React.Component {
   constructor(props) {
@@ -15,23 +18,49 @@ export default class App extends React.Component {
     }
   }
 
-  setPage = ({ previous, current }) => {
+  setPage = (next) => {
+    const previous = this.state.page.current
+
     this.setState({
       page: {
         previous: previous,
-        current: current,
+        current: next,
       },
     })
+  }
+
+  gotoBack = () => {
+    this.setPage(this.state.page.previous)
+  }
+
+  gotoIndexPage = () => {
+    this.setPage(this.props.pageStates.INDEX)
+  }
+
+  gotoTranslationsPage = () => {
+    this.setPage(this.props.pageStates.TRANSLATIONS)
+  }
+
+  gotoChaptersPage = () => {
+    this.setPage(this.props.pageStates.CHAPTERS)
+  }
+
+  gotoSettingsPage = () => {
+    this.setPage(this.props.pageStates.SETTINGS)
   }
 
   render = () => {
     return (
       <main className="main-grid">
-        <HeaderComponent />
+        <HeaderComponent gotoBack={this.gotoBack} />
 
         <div className="content">[Content]</div>
 
         <FooterComponent />
+
+        <button type="button" className="btn btn-action btn-fixed" onClick={this.gotoSettingsPage}>
+          <img src={gear} alt="Settings" />
+        </button>
       </main>
     )
   }
