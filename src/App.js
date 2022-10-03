@@ -3,11 +3,12 @@ import dayjs from "dayjs"
 
 import FooterComponent from "./components/footer.component"
 import HeaderComponent from "./components/header.component."
-import IndexPage from "./pages/index.page.component"
+import IndexPage from "./pages/index.page"
 
 import config from "./data/config.data"
 import gear from "./images/gear-solid-white.svg"
 import "./styles/main.scss"
+import TranslationsPage from "./pages/translations.page"
 
 export default class App extends React.Component {
   constructor(props) {
@@ -26,7 +27,8 @@ export default class App extends React.Component {
   }
 
   componentDidMount = () => {
-    const translationsApi = `${config.api}translations/`
+    console.log(`TODO: Get Translations & Chapter from API`)
+    // const translationsApi = `${config.api}translations/`
     // const chaptersApi = `${translationsApi}kjv/chapters`
 
     // console.log(translationsApi)
@@ -73,6 +75,9 @@ export default class App extends React.Component {
     switch(this.state.page.current) {
       case this.props.pageStates.INDEX:
         return <IndexPage />
+
+      case this.props.pageStates.TRANSLATIONS:
+          return <TranslationsPage />
 
       default:
         return null
