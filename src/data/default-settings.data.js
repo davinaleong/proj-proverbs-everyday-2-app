@@ -1,7 +1,12 @@
+import dayjs from "dayjs"
+
+const todayMonth = dayjs().format("M")
+
 const defaultSettings = {
     theme: "",
     preferredTranslation: "kjv",
-    book: "prov",
+    bookSlug: "prov",
+    chapterSlug: `chapter-${todayMonth}`,
     textSize: "",
 }
 

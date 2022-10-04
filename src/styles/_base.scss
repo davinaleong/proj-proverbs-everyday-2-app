@@ -97,6 +97,33 @@ body {
   font-weight: #{$fw-regular};
 }
 
+@media (prefers-color-scheme: dark) {
+  body {
+    --clr-text: #{$clr-gray-50};
+    --clr-heading: #{$clr-gray-50};
+    --clr-bg: #{$clr-gray-900};
+
+    --clr-header-bg: #{$clr-gray-800};
+
+    --clr-blockquote-text: #{$clr-gray-50};
+    --clr-blockquote-bg: #{$clr-gray-800};
+
+    --clr-footer-bg: #{$clr-gray-800};
+
+    --clr-card-text: #{$clr-gray-50};
+    --clr-card-border: #{$clr-gray-800};
+    --clr-card-bg: transparent;
+    --clr-card-text-hover: #{$clr-gray-100};
+    --clr-card-border-hover: #{$clr-gray-800};
+    --clr-card-bg-hover: transparent;
+
+    --clr-form-text: #{$clr-gray-50};
+    --clr-form-bg: #{$clr-gray-800};
+    --clr-form-input-text: #{$clr-gray-50};
+    --clr-form-input-bg: #{$clr-gray-900};
+  }
+}
+
 .theme-dark {
   --clr-text: #{$clr-gray-50};
   --clr-heading: #{$clr-gray-50};

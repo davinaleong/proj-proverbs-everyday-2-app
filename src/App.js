@@ -19,7 +19,8 @@ export default class App extends React.Component {
     super(props)
 
     const { pageStates, defaultSettings } = this.props
-    const { theme, preferredTranslation, book, textSize } = defaultSettings
+    const { theme, preferredTranslation, bookSlug, chapterSlug, textSize } =
+      defaultSettings
     const todayMonth = dayjs().format("M")
 
     this.state = {
@@ -28,11 +29,11 @@ export default class App extends React.Component {
         current: pageStates.INDEX,
       },
       settings: {
-        theme: theme,
-        preferredTranslation: preferredTranslation,
-        book: book,
-        textSize: textSize,
-        chapterSlug: `chapter-${todayMonth}`,
+        theme,
+        preferredTranslation,
+        textSize,
+        bookSlug,
+        chapterSlug,
       },
       translations: [],
       translation: {},
@@ -45,24 +46,26 @@ export default class App extends React.Component {
     console.log(`TODO: Get Translations & Chapter from API`)
 
     const { settings } = this.state
-    const { preferredTranslation, book, chapterSlug } = settings
+    const { preferredTranslation, bookSlug, chapterSlug } = settings
 
     const translationsApi = `${config.api}translations/`
-    const chaptersApi = `${translationsApi}${preferredTranslation}/books/${book}/chapters`
+    const chaptersApi = `${translationsApi}${preferredTranslation}/books/${bookSlug}/chapters`
 
     console.log(`Translations API`, translationsApi)
     console.log(`Chapters API`, chaptersApi)
 
     const translations = responses.translations.translations.data
     const translation = translations.filter(
-      (translation) => translation.slug == preferredTranslation
+      (translation) => translation.slug === preferredTranslation
     )[0]
 
     let chapters = []
     if (responses[preferredTranslation].chapters !== undefined) {
       chapters = responses[preferredTranslation].chapters
     }
-    const chapter = chapters.filter((chapter) => chapter.slug == chapterSlug)[0]
+    const chapter = chapters.filter(
+      (chapter) => chapter.slug === chapterSlug
+    )[0]
 
     // fetch(translationsApi)
     //   .then((response) => response.json())
@@ -81,12 +84,17 @@ export default class App extends React.Component {
   getTranslation = (translationSlug) => {
     const { translations } = this.state
     return translations.filter((translation) => {
-      return translationSlug == translation.slug
+      return translationSlug === translation.slug
     })[0]
   }
 
+  getChapter = (chapterSlug) => {
+    const { chapters } = this.state
+    return chapters.filter((chapter) => chapterSlug == chapter.slug)[0]
+  }
+
   setPage = (next = "") => {
-    if (next && next != "") {
+    if (next && next !== "") {
       const previous = this.state.page.current
 
       this.setState({
@@ -109,17 +117,27 @@ export default class App extends React.Component {
   }
 
   setTranslation = (translationSlug = "kjv") => {
+    const translation = this.getTranslation(translationSlug)
+
+    let chapters = []
+    if (responses[translation.slug].chapters !== undefined) {
+      chapters = responses[translation.slug].chapters
+    }
+
     this.setState({
-      translation: this.getTranslation(translationSlug),
+      translation: translation,
+      chapters: chapters,
     })
   }
 
-  setChapter = (chapter = 0) => {
-    const thisChapter = chapter > 0 ? chapter : dayjs().format("M")
+  setChapter = (chapterSlug = "") => {
+    const todayMonth = dayjs().format("M")
+    const thisChapterSlug =
+      chapterSlug == "" ? `chapter-${todayMonth}` : chapterSlug
 
-    // this.setState({
-    //   chapter: `chapter-${thisChapter}`,
-    // })
+    this.setState({
+      chapter: this.getChapter(thisChapterSlug),
+    })
   }
 
   gotoBack = () => {
@@ -142,6 +160,29 @@ export default class App extends React.Component {
     this.setPage(this.props.pageStates.SETTINGS)
   }
 
+  translationClickHandler = (translationSlug = "kjv") => {
+    const translation = this.getTranslation(translationSlug)
+
+    let chapters = []
+    let chapter = {}
+    if (responses[translation.slug].chapters !== undefined) {
+      chapters = responses[translation.slug].chapters
+
+      const todayMonth = dayjs().format("M")
+      chapter = chapters.filter(
+        (chapter) => chapter.slug == `chapter-${todayMonth}`
+      )[0]
+    }
+
+    this.setState({
+      translation,
+      chapters,
+      chapter,
+    })
+
+    this.gotoIndexPage()
+  }
+
   renderPage = () => {
     const { pageStates, defaultSettings } = this.props
     const { page, settings, translations, translation, chapter } = this.state
@@ -157,7 +198,12 @@ export default class App extends React.Component {
         )
 
       case pageStates.TRANSLATIONS:
-        return <TranslationsPage translations={translations} />
+        return (
+          <TranslationsPage
+            translations={translations}
+            translationClickHandler={this.translationClickHandler}
+          />
+        )
 
       case pageStates.CHAPTERS:
         return <ChaptersPage />
