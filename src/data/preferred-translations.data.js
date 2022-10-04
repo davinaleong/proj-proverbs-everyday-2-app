@@ -1,11 +1,11 @@
 const preferredTranslations = [
     {
         name: "King James Version (KJV)",
-        value: "KJV"
+        value: "kjv"
     },
     {
         name: "Young's Literal Translation (YLT)",
-        value: "YLT"
+        value: "ylt"
     }
 ]
 

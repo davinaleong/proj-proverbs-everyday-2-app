@@ -1,6 +1,7 @@
 const defaultSettings = {
     theme: "",
-    preferredTranslation: "KJV",
+    preferredTranslation: "kjv",
+    book: "prov",
     textSize: "",
 }
 

@@ -1,6 +1,8 @@
 import React from "react"
 import dayjs from "dayjs"
 
+import config from "./data/config.data"
+
 import FooterComponent from "./components/footer.component"
 import HeaderComponent from "./components/header.component."
 import IndexPage from "./pages/index.page"
@@ -38,11 +40,16 @@ export default class App extends React.Component {
 
   componentDidMount = () => {
     console.log(`TODO: Get Translations & Chapter from API`)
-    // const translationsApi = `${config.api}translations/`
-    // const chaptersApi = `${translationsApi}kjv/chapters`
 
-    // console.log(translationsApi)
-    // console.log(chaptersApi)
+    const { defaultSettings } = this.props
+    const { book } = defaultSettings
+    const { translation } = this.state
+
+    const translationsApi = `${config.api}translations/`
+    const chaptersApi = `${translationsApi}${translation}/books/${book}/chapters`
+
+    console.log(`Translations API`, translationsApi)
+    console.log(`Chapters API`, chaptersApi)
     // fetch(translationsApi)
     //   .then((response) => response.json())
     //   .then((data) => {
@@ -79,9 +86,11 @@ export default class App extends React.Component {
     })
   }
 
-  setChapter = (chapter = 1) => {
+  setChapter = (chapter = 0) => {
+    const thisChapter = chapter > 0 ? chapter : Number(dayjs().format("M"))
+
     this.setState({
-      chapter: Number(chapter),
+      chapter: thisChapter,
     })
   }
 
