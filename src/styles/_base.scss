@@ -326,7 +326,7 @@ a:where(:hover, :focus, :focus-within) {
 }
 
 .btn-fixed {
-  --btn-fixed-size: 4em;
+  --btn-fixed-size: 3em;
 
   position: fixed;
   width: var(--btn-fixed-size);
@@ -338,8 +338,8 @@ a:where(:hover, :focus, :focus-within) {
 }
 
 .btn-fixed img {
-  width: calc(var(--btn-fixed-size) - 2em);
-  height: calc(var(--btn-fixed-size) - 2em);
+  width: calc(var(--btn-fixed-size) * 0.5);
+  height: calc(var(--btn-fixed-size) * 0.5);
 }
 
 .btn-link {
