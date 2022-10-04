@@ -2,7 +2,7 @@ import React from "react"
 
 const ChaptersPage = ({ chapters, chapterClickHandler }) => {
   const chapterJsx = []
-  chapters.map(({ slug, chapter_no }, index) => {
+  chapters.forEach(({ slug, chapter_no }, index) => {
     chapterJsx.push(
       <button className="btn btn-card | fsize-600" type="button" key={`c` + index} onClick={() => chapterClickHandler(slug)}>
         {chapter_no}

@@ -1,4 +1,5 @@
 import React from "react"
+import { Helmet } from "react-helmet-async"
 import dayjs from "dayjs"
 
 import config from "./data/config.data"
@@ -21,9 +22,14 @@ export default class App extends React.Component {
     const { pageStates, defaultSettings } = this.props
     const { theme, preferredTranslation, bookSlug, chapterSlug, textSize } =
       defaultSettings
-    const todayMonth = dayjs().format("M")
 
     this.state = {
+      meta: {
+        meta_title: "",
+        meta_description: "",
+        meta_author: "",
+        meta_keywords: "",
+      },
       page: {
         previous: "",
         current: pageStates.INDEX,
@@ -48,11 +54,17 @@ export default class App extends React.Component {
     const { settings } = this.state
     const { preferredTranslation, bookSlug, chapterSlug } = settings
 
-    const translationsApi = `${config.api}translations/`
-    const chaptersApi = `${translationsApi}${preferredTranslation}/books/${bookSlug}/chapters`
+    const metaUrl = `${config.apis.apps}${config.slug}/`
 
-    console.log(`Translations API`, translationsApi)
-    console.log(`Chapters API`, chaptersApi)
+    console.log(`Meta URL`, metaUrl)
+
+    const meta = responses.proverbsEveryday.apps.filter(app => app.slug === config.slug)[0]
+
+    const translationsUrl = `${config.apis.bible}translations/`
+    const chaptersUrl = `${translationsUrl}${preferredTranslation}/books/${bookSlug}/chapters`
+
+    console.log(`Translations URL`, translationsUrl)
+    console.log(`Chapters URL`, chaptersUrl)
 
     const translations = responses.translations.translations.data
     const translation = translations.filter(
@@ -74,6 +86,7 @@ export default class App extends React.Component {
     //   })
 
     this.setState({
+      meta,
       translations,
       translation,
       chapters,
@@ -99,7 +112,7 @@ export default class App extends React.Component {
 
   getChapter = (chapterSlug) => {
     const { chapters } = this.state
-    return chapters.filter((chapter) => chapterSlug == chapter.slug)[0]
+    return chapters.filter((chapter) => chapterSlug === chapter.slug)[0]
   }
 
   setPage = (next = "") => {
@@ -132,7 +145,7 @@ export default class App extends React.Component {
   setChapter = (chapterSlug = "") => {
     const todayMonth = dayjs().format("M")
     const thisChapterSlug =
-      chapterSlug == "" ? `chapter-${todayMonth}` : chapterSlug
+      chapterSlug === "" ? `chapter-${todayMonth}` : chapterSlug
 
     this.setState({
       chapter: this.getChapter(thisChapterSlug),
@@ -164,7 +177,7 @@ export default class App extends React.Component {
 
     const todayMonth = dayjs().format("M")
     const chapter = chapters.filter(
-      (chapter) => chapter.slug == `chapter-${todayMonth}`
+      (chapter) => chapter.slug === `chapter-${todayMonth}`
     )[0]
 
     this.setState({
@@ -184,7 +197,7 @@ export default class App extends React.Component {
 
       const todayMonth = dayjs().format("M")
       chapter = chapters.filter(
-        (chapter) => chapter.slug == `chapter-${todayMonth}`
+        (chapter) => chapter.slug === `chapter-${todayMonth}`
       )[0]
     }
 
@@ -219,7 +232,7 @@ export default class App extends React.Component {
     let chapter = {}
     if (chapters) {
       chapter = chapters.filter(
-        (chapter) => chapter.slug == `chapter-${todayMonth}`
+        (chapter) => chapter.slug === `chapter-${todayMonth}`
       )[0]
     }
 
@@ -283,11 +296,19 @@ export default class App extends React.Component {
   }
 
   render = () => {
-    const { settings } = this.state
+    const { meta, settings } = this.state
+    const { meta_title, meta_author, meta_description, meta_keywords } = meta
     const mainClass = `main-grid ${settings.theme}`
 
     return (
       <main className={mainClass}>
+        <Helmet>
+          <title>{meta_title}</title>
+          <meta name="author" content={meta_author} />
+          <meta name="description" content={meta_description} />
+          <meta name="keywords" content={meta_keywords} />
+        </Helmet>
+
         <HeaderComponent
           gotoBack={this.gotoBack}
           todaysProverbClickHandler={this.todaysProverbClickHandler}

@@ -4,7 +4,7 @@ const TranslationsPage = (props) => {
   const { translations } = props
   const translationsJsx = []
 
-  translations.map(({ title, abbr, slug }, index) => {
+  translations.forEach(({ title, abbr, slug }, index) => {
     translationsJsx.push(
       <button
         className="btn btn-card"

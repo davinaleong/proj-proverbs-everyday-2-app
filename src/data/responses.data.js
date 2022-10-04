@@ -1,4 +1,24 @@
 const responses = {
+  proverbsEveryday: {
+    status: "SUCCESS",
+    message: "GET data SUCCESS.",
+    apps: [
+      {
+        slug: "proverbs-everyday",
+        name: "Proverbs Everyday",
+        title: "Proverbs Everyday",
+        description:
+          "Displays the Bible Proverb chapter of the day. Able to view all chapters of the book of Proverbs too.",
+        meta_title: "Proverbs Everyday",
+        meta_author: "Davina Leong",
+        meta_description:
+          "Displays the Bible Proverb chapter of the day. Able to view all chapters of the book of Proverbs too.",
+        meta_keywords:
+          "proverbs everyday, proverbs, everyday, daily, bible, jesus, jesus christ, christ, proverb, proverb everyday, christian, reactjs, html, css, sass, scss, html5, css3",
+        released_at: "2020-02-20",
+      },
+    ],
+  },
   translations: {
     status: "SUCCESS",
     message: "GET data SUCCESS.",
