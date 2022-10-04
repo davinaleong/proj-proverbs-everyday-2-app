@@ -8,19 +8,22 @@ export default class SettingsPage extends React.Component {
   constructor(props) {
     super(props)
 
+    const { settings } = this.props
+    const { theme, preferredTranslation, textSize } = settings
+
     this.state = {
-      theme: this.props.settings.theme,
-      preferredTranslation: this.props.settings.preferredTranslation,
-      textSize: this.props.settings.textSize,
+      theme: theme,
+      preferredTranslation: preferredTranslation,
+      textSize: textSize,
     }
   }
 
-  renderOptions = (options, stateKey) => {
+  renderOptions = (options, optionKey) => {
     const optionsJsx = []
 
     options.forEach(({ name, value }, index) => {
       optionsJsx.push(
-        <option value={value} key={`to` + index}>
+        <option value={value} key={`o` + optionKey + index}>
           {name}
         </option>
       )
@@ -54,9 +57,9 @@ export default class SettingsPage extends React.Component {
 
   resetClickHandler = (e) => {
     this.setState({
-        theme: this.props.defaultSettings.theme,
-        preferredTranslation: this.props.defaultSettings.preferredTranslation,
-        textSize: this.props.defaultSettings.textSize,
+      theme: this.props.defaultSettings.theme,
+      preferredTranslation: this.props.defaultSettings.preferredTranslation,
+      textSize: this.props.defaultSettings.textSize,
     })
   }
 
@@ -77,7 +80,7 @@ export default class SettingsPage extends React.Component {
               value={this.state.theme}
               onChange={this.themeChangeHandler}
             >
-              {this.renderOptions(themes)}
+              {this.renderOptions(themes, `t`)}
             </select>
           </div>
 
@@ -92,9 +95,7 @@ export default class SettingsPage extends React.Component {
               value={this.state.preferredTranslation}
               onChange={this.preferredTranslationChangeHandler}
             >
-              {this.renderOptions(
-                preferredTranslations
-              )}
+              {this.renderOptions(preferredTranslations, `pt`)}
             </select>
           </div>
 
@@ -109,7 +110,7 @@ export default class SettingsPage extends React.Component {
               value={this.state.textSize}
               onChange={this.textSizeChangeHandler}
             >
-              {this.renderOptions(textSizes)}
+              {this.renderOptions(textSizes, `ts`)}
             </select>
           </div>
 
@@ -118,10 +119,18 @@ export default class SettingsPage extends React.Component {
           </p>
 
           <div className="form-buttons-flex">
-            <button className="btn btn-primary" type="button" onClick={this.saveClickHandler}>
+            <button
+              className="btn btn-primary"
+              type="button"
+              onClick={this.saveClickHandler}
+            >
               Save
             </button>
-            <button className="btn btn-secondary" type="button" onClick={this.resetClickHandler}>
+            <button
+              className="btn btn-secondary"
+              type="button"
+              onClick={this.resetClickHandler}
+            >
               Reset
             </button>
           </div>

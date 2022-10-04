@@ -4,32 +4,35 @@ import dayjs from "dayjs"
 import FooterComponent from "./components/footer.component"
 import HeaderComponent from "./components/header.component."
 import IndexPage from "./pages/index.page"
-
-import config from "./data/config.data"
-import gear from "./images/gear-solid-white.svg"
-import "./styles/main.scss"
 import TranslationsPage from "./pages/translations.page"
 import ChaptersPage from "./pages/chapters.page"
 import SettingsPage from "./pages/settings.page"
+
+import gear from "./images/gear-solid-white.svg"
+import "./styles/main.scss"
 
 export default class App extends React.Component {
   constructor(props) {
     super(props)
 
+    const { pageStates, defaultSettings } = this.props
+    const { theme, preferredTranslation, textSize } = defaultSettings
+    const todayMonth = Number(dayjs().format("M"))
+
     this.state = {
       page: {
         previous: "",
-        current: this.props.pageStates.INDEX,
+        current: pageStates.INDEX,
       },
       settings: {
-        theme: this.props.defaultSettings.theme,
-        preferredTranslation: this.props.defaultSettings.preferredTranslation,
-        textSize: this.props.defaultSettings.textSize,
+        theme: theme,
+        preferredTranslation: preferredTranslation,
+        textSize: textSize,
       },
       translations: [],
-      translation: "",
+      translation: preferredTranslation,
       chapters: [],
-      chapter: "",
+      chapter: todayMonth,
     }
   }
 
@@ -47,24 +50,38 @@ export default class App extends React.Component {
     //   })
   }
 
-  setPage = (next) => {
-    const previous = this.state.page.current
+  setPage = (next = "") => {
+    if (next && next != "") {
+      const previous = this.state.page.current
 
-    this.setState({
-      page: {
-        previous: previous,
-        current: next,
-      },
-    })
+      this.setState({
+        page: {
+          previous: previous,
+          current: next,
+        },
+      })
+    }
   }
 
-  setSettings = (theme, preferredTranslation, textSize) => {
+  setSettings = (theme = "", preferredTranslation = "KJV", textSize = "") => {
     this.setState({
       settings: {
         theme,
         preferredTranslation,
-        textSize
-      }
+        textSize,
+      },
+    })
+  }
+
+  setTranslation = (translation = "KJV") => {
+    this.setState({
+      translation,
+    })
+  }
+
+  setChapter = (chapter = 1) => {
+    this.setState({
+      chapter: Number(chapter),
     })
   }
 
@@ -94,7 +111,7 @@ export default class App extends React.Component {
 
     switch (page.current) {
       case pageStates.INDEX:
-        return <IndexPage textSize={settings.textSize}/>
+        return <IndexPage textSize={settings.textSize} />
 
       case pageStates.TRANSLATIONS:
         return <TranslationsPage />
