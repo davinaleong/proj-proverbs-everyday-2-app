@@ -9,6 +9,8 @@ import config from "./data/config.data"
 import gear from "./images/gear-solid-white.svg"
 import "./styles/main.scss"
 import TranslationsPage from "./pages/translations.page"
+import ChaptersPage from "./pages/chapters.page"
+import SettingsPage from "./pages/settings.page"
 
 export default class App extends React.Component {
   constructor(props) {
@@ -18,6 +20,11 @@ export default class App extends React.Component {
       page: {
         previous: "",
         current: this.props.pageStates.INDEX,
+      },
+      settings: {
+        theme: this.props.defaultSettings.theme,
+        preferredTranslation: this.props.defaultSettings.preferredTranslation,
+        textSize: this.props.defaultSettings.textSize,
       },
       translations: [],
       translation: "",
@@ -72,12 +79,18 @@ export default class App extends React.Component {
   }
 
   renderPage = () => {
-    switch(this.state.page.current) {
+    switch (this.state.page.current) {
       case this.props.pageStates.INDEX:
         return <IndexPage />
 
       case this.props.pageStates.TRANSLATIONS:
-          return <TranslationsPage />
+        return <TranslationsPage />
+
+      case this.props.pageStates.CHAPTERS:
+        return <ChaptersPage />
+
+      case this.props.pageStates.SETTINGS:
+        return <SettingsPage />
 
       default:
         return null
