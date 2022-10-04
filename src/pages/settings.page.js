@@ -1,72 +1,32 @@
 import React from "react"
 
-// const SettingsPage = () => {
-//   return (
-//     <>
-//       <h2 className="page-heading p-b-400">Settings</h2>
-
-//       <form action="#" className="settings-form">
-//         <div className="form-group-flex">
-//           <label for="theme" className="form-label">
-//             Theme
-//           </label>
-//           <select name="theme" id="theme" className="form-input">
-//             <option value="">Default</option>
-//             <option value="them-dark">Dark</option>
-//             <option value="theme-blue-gray">Blue-Gray</option>
-//             <option value="theme-pretty">Pretty Pink</option>
-//             <option value="theme-professional">Professional</option>
-//             <option value="theme-lamborghini">Lamborghini</option>
-//             <option value="theme-tehtarik">Teh Tarik</option>
-//           </select>
-//         </div>
-
-//         <div className="form-group-flex">
-//           <label for="translation" className="form-label">
-//             Preferred Translation
-//           </label>
-//           <select name="translation" id="translation" className="form-input">
-//             <option value="KJV">King James Version (KJV)</option>
-//             <option value="YLT">Young's Literal Translation (YLT)</option>
-//           </select>
-//         </div>
-
-//         <div className="form-group-flex">
-//           <label for="size" className="form-label">
-//             Text Size
-//           </label>
-//           <select name="size" id="size" className="form-input">
-//             <option value="regular">Regular</option>
-//             <option value="large">Large</option>
-//           </select>
-//         </div>
-
-//         <p className="clr-danger-400">
-//           Click "save" for changes to take place.
-//         </p>
-
-//         <div className="form-buttons-flex">
-//           <button className="btn btn-primary" type="button">
-//             Save
-//           </button>
-//           <button className="btn btn-secondary" type="button">
-//             Reset
-//           </button>
-//         </div>
-//       </form>
-//     </>
-//   )
-// }
+import themes from "../data/themes.data"
+import preferredTranslations from "../data/preferred-translations.data"
+import textSizes from "../data/text-sizes.data"
 
 export default class SettingsPage extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      theme: "",
-      preferredTranslation: "",
-      textSize: "",
+      theme: this.props.settings.theme,
+      preferredTranslation: this.props.settings.preferredTranslation,
+      textSize: this.props.settings.textSize,
     }
+  }
+
+  renderOptions = (options, stateKey) => {
+    const optionsJsx = []
+
+    options.forEach(({ name, value }, index) => {
+      optionsJsx.push(
+        <option value={value} key={`to` + index}>
+          {name}
+        </option>
+      )
+    })
+
+    return optionsJsx
   }
 
   themeChangeHandler = (e) => {
@@ -77,13 +37,26 @@ export default class SettingsPage extends React.Component {
 
   preferredTranslationChangeHandler = (e) => {
     this.setState({
-        defaultTranslation: e.target.value,
+      preferredTranslation: e.target.value,
     })
   }
 
   textSizeChangeHandler = (e) => {
     this.setState({
-        textSize: e.targer.value,
+      textSize: e.target.value,
+    })
+  }
+
+  saveClickHandler = (e) => {
+    const { theme, preferredTranslation, textSize } = this.state
+    this.props.setSettings(theme, preferredTranslation, textSize)
+  }
+
+  resetClickHandler = (e) => {
+    this.setState({
+        theme: this.props.defaultSettings.theme,
+        preferredTranslation: this.props.defaultSettings.preferredTranslation,
+        textSize: this.props.defaultSettings.textSize,
     })
   }
 
@@ -94,37 +67,49 @@ export default class SettingsPage extends React.Component {
 
         <form action="#" className="settings-form">
           <div className="form-group-flex">
-            <label for="theme" className="form-label">
+            <label htmlFor="theme" className="form-label">
               Theme
             </label>
-            <select name="theme" id="theme" className="form-input" onChange={this.themeChangeHandler}>
-              <option value="">Default</option>
-              <option value="theme-dark">Dark</option>
-              <option value="theme-blue-gray">Blue-Gray</option>
-              <option value="theme-pretty">Pretty Pink</option>
-              <option value="theme-professional">Professional</option>
-              <option value="theme-lamborghini">Lamborghini</option>
-              <option value="theme-tehtarik">Teh Tarik</option>
+            <select
+              name="theme"
+              id="theme"
+              className="form-input"
+              value={this.state.theme}
+              onChange={this.themeChangeHandler}
+            >
+              {this.renderOptions(themes)}
             </select>
           </div>
 
           <div className="form-group-flex">
-            <label for="translation" className="form-label">
+            <label htmlFor="preferredTranslations" className="form-label">
               Preferred Translation
             </label>
-            <select name="translation" id="translation" className="form-input" onChange={this.preferredTranslationChangeHandler}>
-              <option value="KJV">King James Version (KJV)</option>
-              <option value="YLT">Young's Literal Translation (YLT)</option>
+            <select
+              name="preferredTranslations"
+              id="preferredTranslations"
+              className="form-input"
+              value={this.state.preferredTranslation}
+              onChange={this.preferredTranslationChangeHandler}
+            >
+              {this.renderOptions(
+                preferredTranslations
+              )}
             </select>
           </div>
 
           <div className="form-group-flex">
-            <label for="size" className="form-label">
+            <label htmlFor="textSize" className="form-label">
               Text Size
             </label>
-            <select name="size" id="size" className="form-input" onChange={this.textSizeChangeHandler}>
-              <option value="regular">Regular</option>
-              <option value="large">Large</option>
+            <select
+              name="textSize"
+              id="textSize"
+              className="form-input"
+              value={this.state.textSize}
+              onChange={this.textSizeChangeHandler}
+            >
+              {this.renderOptions(textSizes)}
             </select>
           </div>
 
@@ -133,10 +118,10 @@ export default class SettingsPage extends React.Component {
           </p>
 
           <div className="form-buttons-flex">
-            <button className="btn btn-primary" type="button">
+            <button className="btn btn-primary" type="button" onClick={this.saveClickHandler}>
               Save
             </button>
-            <button className="btn btn-secondary" type="button">
+            <button className="btn btn-secondary" type="button" onClick={this.resetClickHandler}>
               Reset
             </button>
           </div>

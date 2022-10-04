@@ -58,6 +58,16 @@ export default class App extends React.Component {
     })
   }
 
+  setSettings = (theme, preferredTranslation, textSize) => {
+    this.setState({
+      settings: {
+        theme,
+        preferredTranslation,
+        textSize
+      }
+    })
+  }
+
   gotoBack = () => {
     this.setPage(this.state.page.previous)
   }
@@ -90,7 +100,13 @@ export default class App extends React.Component {
         return <ChaptersPage />
 
       case this.props.pageStates.SETTINGS:
-        return <SettingsPage />
+        return (
+          <SettingsPage
+            settings={this.state.settings}
+            defaultSettings={this.props.defaultSettings}
+            setSettings={this.setSettings}
+          />
+        )
 
       default:
         return null
