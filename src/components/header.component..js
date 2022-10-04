@@ -50,7 +50,7 @@ const HeaderComponent = ({
                   type="button"
                   onClick={gotoChaptersPage}
                 >
-                  View Chapters
+                  Other Chapters
                 </button>
               </li>
             </ul>

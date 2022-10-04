@@ -174,7 +174,7 @@ export default class App extends React.Component {
     this.gotoIndexPage()
   }
 
-  translationsClickHandler = (translationSlug = "kjv") => {
+  translationClickHandler = (translationSlug = "kjv") => {
     const translation = this.getTranslation(translationSlug)
 
     let chapters = []
@@ -191,6 +191,16 @@ export default class App extends React.Component {
     this.setState({
       translation,
       chapters,
+      chapter,
+    })
+
+    this.gotoIndexPage()
+  }
+
+  chapterClickHandler = (chapterSlug = "chapter-1") => {
+    const chapter = this.getChapter(chapterSlug)
+
+    this.setState({
       chapter,
     })
 
@@ -229,7 +239,8 @@ export default class App extends React.Component {
 
   renderPage = () => {
     const { pageStates, defaultSettings } = this.props
-    const { page, settings, translations, translation, chapter } = this.state
+    const { page, settings, translations, translation, chapters, chapter } =
+      this.state
 
     switch (page.current) {
       case pageStates.INDEX:
@@ -245,12 +256,17 @@ export default class App extends React.Component {
         return (
           <TranslationsPage
             translations={translations}
-            translationsClickHandler={this.translationsClickHandler}
+            translationClickHandler={this.translationClickHandler}
           />
         )
 
       case pageStates.CHAPTERS:
-        return <ChaptersPage />
+        return (
+          <ChaptersPage
+            chapters={chapters}
+            chapterClickHandler={this.chapterClickHandler}
+          />
+        )
 
       case pageStates.SETTINGS:
         return (
