@@ -89,21 +89,24 @@ export default class App extends React.Component {
   }
 
   renderPage = () => {
-    switch (this.state.page.current) {
-      case this.props.pageStates.INDEX:
-        return <IndexPage />
+    const { pageStates, defaultSettings } = this.props
+    const { page, settings } = this.state
 
-      case this.props.pageStates.TRANSLATIONS:
+    switch (page.current) {
+      case pageStates.INDEX:
+        return <IndexPage textSize={settings.textSize}/>
+
+      case pageStates.TRANSLATIONS:
         return <TranslationsPage />
 
-      case this.props.pageStates.CHAPTERS:
+      case pageStates.CHAPTERS:
         return <ChaptersPage />
 
-      case this.props.pageStates.SETTINGS:
+      case pageStates.SETTINGS:
         return (
           <SettingsPage
-            settings={this.state.settings}
-            defaultSettings={this.props.defaultSettings}
+            settings={settings}
+            defaultSettings={defaultSettings}
             setSettings={this.setSettings}
           />
         )
@@ -114,8 +117,11 @@ export default class App extends React.Component {
   }
 
   render = () => {
+    const { settings } = this.state
+    const mainClass = `main-grid ${settings.theme}`
+
     return (
-      <main className="main-grid">
+      <main className={mainClass}>
         <HeaderComponent
           gotoBack={this.gotoBack}
           gotoIndexPage={this.gotoIndexPage}
