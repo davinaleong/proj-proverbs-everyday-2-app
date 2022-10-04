@@ -20,7 +20,7 @@ export default class App extends React.Component {
 
     const { pageStates, defaultSettings } = this.props
     const { theme, preferredTranslation, book, textSize } = defaultSettings
-    const todayMonth = Number(dayjs().format("M"))
+    const todayMonth = dayjs().format("M")
 
     this.state = {
       page: {
@@ -32,7 +32,7 @@ export default class App extends React.Component {
         preferredTranslation: preferredTranslation,
         book: book,
         textSize: textSize,
-        chapter: todayMonth,
+        chapterSlug: `chapter-${todayMonth}`,
       },
       translations: [],
       translation: {},
@@ -45,7 +45,7 @@ export default class App extends React.Component {
     console.log(`TODO: Get Translations & Chapter from API`)
 
     const { settings } = this.state
-    const { preferredTranslation, book, chapter } = settings
+    const { preferredTranslation, book, chapterSlug } = settings
 
     const translationsApi = `${config.api}translations/`
     const chaptersApi = `${translationsApi}${preferredTranslation}/books/${book}/chapters`
@@ -57,7 +57,12 @@ export default class App extends React.Component {
     const translation = translations.filter(
       (translation) => translation.slug == preferredTranslation
     )[0]
-    // const chapters = []
+
+    let chapters = []
+    if (responses[preferredTranslation].chapters !== undefined) {
+      chapters = responses[preferredTranslation].chapters
+    }
+    const chapter = chapters.filter((chapter) => chapter.slug == chapterSlug)[0]
 
     // fetch(translationsApi)
     //   .then((response) => response.json())
@@ -68,6 +73,8 @@ export default class App extends React.Component {
     this.setState({
       translations,
       translation,
+      chapters,
+      chapter,
     })
   }
 
@@ -108,11 +115,11 @@ export default class App extends React.Component {
   }
 
   setChapter = (chapter = 0) => {
-    const thisChapter = chapter > 0 ? chapter : Number(dayjs().format("M"))
+    const thisChapter = chapter > 0 ? chapter : dayjs().format("M")
 
-    this.setState({
-      chapter: thisChapter,
-    })
+    // this.setState({
+    //   chapter: `chapter-${thisChapter}`,
+    // })
   }
 
   gotoBack = () => {
@@ -137,12 +144,16 @@ export default class App extends React.Component {
 
   renderPage = () => {
     const { pageStates, defaultSettings } = this.props
-    const { page, settings, translations, translation } = this.state
+    const { page, settings, translations, translation, chapter } = this.state
 
     switch (page.current) {
       case pageStates.INDEX:
         return (
-          <IndexPage textSize={settings.textSize} translation={translation} />
+          <IndexPage
+            textSize={settings.textSize}
+            translation={translation}
+            chapter={chapter}
+          />
         )
 
       case pageStates.TRANSLATIONS:
