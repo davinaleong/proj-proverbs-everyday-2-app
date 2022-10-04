@@ -88,6 +88,15 @@ export default class App extends React.Component {
     })[0]
   }
 
+  getChapters = (translationSlug) => {
+    let chapters = []
+    if (responses[translationSlug].chapters !== undefined) {
+      chapters = responses[translationSlug].chapters
+    }
+
+    return chapters
+  }
+
   getChapter = (chapterSlug) => {
     const { chapters } = this.state
     return chapters.filter((chapter) => chapterSlug == chapter.slug)[0]
@@ -104,16 +113,6 @@ export default class App extends React.Component {
         },
       })
     }
-  }
-
-  setSettings = (theme = "", preferredTranslation = "kjv", textSize = "") => {
-    this.setState({
-      settings: {
-        theme,
-        preferredTranslation,
-        textSize,
-      },
-    })
   }
 
   setTranslation = (translationSlug = "kjv") => {
@@ -160,7 +159,22 @@ export default class App extends React.Component {
     this.setPage(this.props.pageStates.SETTINGS)
   }
 
-  translationClickHandler = (translationSlug = "kjv") => {
+  todaysProverbClickHandler = () => {
+    const { chapters } = this.state
+
+    const todayMonth = dayjs().format("M")
+    const chapter = chapters.filter(
+      (chapter) => chapter.slug == `chapter-${todayMonth}`
+    )[0]
+
+    this.setState({
+      chapter,
+    })
+
+    this.gotoIndexPage()
+  }
+
+  translationsClickHandler = (translationSlug = "kjv") => {
     const translation = this.getTranslation(translationSlug)
 
     let chapters = []
@@ -175,6 +189,36 @@ export default class App extends React.Component {
     }
 
     this.setState({
+      translation,
+      chapters,
+      chapter,
+    })
+
+    this.gotoIndexPage()
+  }
+
+  saveClickHandler = (
+    theme = "",
+    preferredTranslation = "kjv",
+    textSize = ""
+  ) => {
+    const translation = this.getTranslation(preferredTranslation)
+    const chapters = this.getChapters(preferredTranslation)
+    const todayMonth = dayjs().format("M")
+
+    let chapter = {}
+    if (chapters) {
+      chapter = chapters.filter(
+        (chapter) => chapter.slug == `chapter-${todayMonth}`
+      )[0]
+    }
+
+    this.setState({
+      settings: {
+        theme,
+        preferredTranslation,
+        textSize,
+      },
       translation,
       chapters,
       chapter,
@@ -201,7 +245,7 @@ export default class App extends React.Component {
         return (
           <TranslationsPage
             translations={translations}
-            translationClickHandler={this.translationClickHandler}
+            translationsClickHandler={this.translationsClickHandler}
           />
         )
 
@@ -213,7 +257,7 @@ export default class App extends React.Component {
           <SettingsPage
             settings={settings}
             defaultSettings={defaultSettings}
-            setSettings={this.setSettings}
+            saveClickHandler={this.saveClickHandler}
           />
         )
 
@@ -230,7 +274,7 @@ export default class App extends React.Component {
       <main className={mainClass}>
         <HeaderComponent
           gotoBack={this.gotoBack}
-          gotoIndexPage={this.gotoIndexPage}
+          todaysProverbClickHandler={this.todaysProverbClickHandler}
           gotoTranslationsPage={this.gotoTranslationsPage}
           gotoChaptersPage={this.gotoChaptersPage}
         />

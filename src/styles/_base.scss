@@ -540,13 +540,12 @@ a:where(:hover, :focus, :focus-within) {
 }
 
 sup,
-sub,
-.sup,
-.sub {
+sub {
   font-size: var(--fsize-sup);
 }
 
-.fsize-large:where(sup, sub, .sup, .sub) {
+.text.fsize-large sup,
+.text.fsize-large sub {
   font-size: var(--fsize-regular);
 }
 

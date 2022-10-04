@@ -52,7 +52,7 @@ export default class SettingsPage extends React.Component {
 
   saveClickHandler = (e) => {
     const { theme, preferredTranslation, textSize } = this.state
-    this.props.setSettings(theme, preferredTranslation, textSize)
+    this.props.saveClickHandler(theme, preferredTranslation, textSize)
   }
 
   resetClickHandler = (e) => {

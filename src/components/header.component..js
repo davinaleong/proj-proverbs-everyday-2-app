@@ -1,7 +1,12 @@
 import React, { useState } from "react"
 import dayjs from "dayjs"
 
-const HeaderComponent = ({ gotoBack, gotoIndexPage, gotoTranslationsPage, gotoChaptersPage }) => {
+const HeaderComponent = ({
+  gotoBack,
+  todaysProverbClickHandler,
+  gotoTranslationsPage,
+  gotoChaptersPage,
+}) => {
   const [expandMenu, setExpandMenu] = useState(false)
   const today = dayjs().format("D MMM YYYY")
 
@@ -22,17 +27,29 @@ const HeaderComponent = ({ gotoBack, gotoIndexPage, gotoTranslationsPage, gotoCh
                 </button>
               </li>
               <li className="nav-item">
-                <button className="btn btn-link" type="button" onClick={gotoIndexPage}>
+                <button
+                  className="btn btn-link"
+                  type="button"
+                  onClick={todaysProverbClickHandler}
+                >
                   Today's Proverb
                 </button>
               </li>
               <li className="nav-item">
-                <button className="btn btn-link" type="button" onClick={gotoTranslationsPage}>
+                <button
+                  className="btn btn-link"
+                  type="button"
+                  onClick={gotoTranslationsPage}
+                >
                   Translations
                 </button>
               </li>
               <li className="nav-item">
-                <button className="btn btn-link" type="button" onClick={gotoChaptersPage}>
+                <button
+                  className="btn btn-link"
+                  type="button"
+                  onClick={gotoChaptersPage}
+                >
                   View Chapters
                 </button>
               </li>
@@ -44,7 +61,11 @@ const HeaderComponent = ({ gotoBack, gotoIndexPage, gotoTranslationsPage, gotoCh
           <nav className="main-nav main-nav-right">
             <ul className="nav-list" role="list">
               <li className="nav-item">
-                <button className="btn btn-link" type="button" onClick={gotoBack}>
+                <button
+                  className="btn btn-link"
+                  type="button"
+                  onClick={gotoBack}
+                >
                   Back
                 </button>
               </li>
