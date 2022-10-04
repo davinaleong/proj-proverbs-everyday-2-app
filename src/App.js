@@ -2,6 +2,7 @@ import React from "react"
 import dayjs from "dayjs"
 
 import config from "./data/config.data"
+import responses from "./data/responses.data"
 
 import FooterComponent from "./components/footer.component"
 import HeaderComponent from "./components/header.component."
@@ -18,7 +19,7 @@ export default class App extends React.Component {
     super(props)
 
     const { pageStates, defaultSettings } = this.props
-    const { theme, preferredTranslation, textSize } = defaultSettings
+    const { theme, preferredTranslation, book, textSize } = defaultSettings
     const todayMonth = Number(dayjs().format("M"))
 
     this.state = {
@@ -29,32 +30,52 @@ export default class App extends React.Component {
       settings: {
         theme: theme,
         preferredTranslation: preferredTranslation,
+        book: book,
         textSize: textSize,
+        chapter: todayMonth,
       },
       translations: [],
-      translation: preferredTranslation,
+      translation: {},
       chapters: [],
-      chapter: todayMonth,
+      chapter: {},
     }
   }
 
   componentDidMount = () => {
     console.log(`TODO: Get Translations & Chapter from API`)
 
-    const { defaultSettings } = this.props
-    const { book } = defaultSettings
-    const { translation } = this.state
+    const { settings } = this.state
+    const { preferredTranslation, book, chapter } = settings
 
     const translationsApi = `${config.api}translations/`
-    const chaptersApi = `${translationsApi}${translation}/books/${book}/chapters`
+    const chaptersApi = `${translationsApi}${preferredTranslation}/books/${book}/chapters`
 
     console.log(`Translations API`, translationsApi)
     console.log(`Chapters API`, chaptersApi)
+
+    const translations = responses.translations.translations.data
+    const translation = translations.filter(
+      (translation) => translation.slug == preferredTranslation
+    )[0]
+    // const chapters = []
+
     // fetch(translationsApi)
     //   .then((response) => response.json())
     //   .then((data) => {
     //     console.log(data)
     //   })
+
+    this.setState({
+      translations,
+      translation,
+    })
+  }
+
+  getTranslation = (translationSlug) => {
+    const { translations } = this.state
+    return translations.filter((translation) => {
+      return translationSlug == translation.slug
+    })[0]
   }
 
   setPage = (next = "") => {
@@ -70,7 +91,7 @@ export default class App extends React.Component {
     }
   }
 
-  setSettings = (theme = "", preferredTranslation = "KJV", textSize = "") => {
+  setSettings = (theme = "", preferredTranslation = "kjv", textSize = "") => {
     this.setState({
       settings: {
         theme,
@@ -80,9 +101,9 @@ export default class App extends React.Component {
     })
   }
 
-  setTranslation = (translation = "KJV") => {
+  setTranslation = (translationSlug = "kjv") => {
     this.setState({
-      translation,
+      translation: this.getTranslation(translationSlug),
     })
   }
 
@@ -116,14 +137,16 @@ export default class App extends React.Component {
 
   renderPage = () => {
     const { pageStates, defaultSettings } = this.props
-    const { page, settings } = this.state
+    const { page, settings, translations, translation } = this.state
 
     switch (page.current) {
       case pageStates.INDEX:
-        return <IndexPage textSize={settings.textSize} />
+        return (
+          <IndexPage textSize={settings.textSize} translation={translation} />
+        )
 
       case pageStates.TRANSLATIONS:
-        return <TranslationsPage />
+        return <TranslationsPage translations={translations} />
 
       case pageStates.CHAPTERS:
         return <ChaptersPage />
