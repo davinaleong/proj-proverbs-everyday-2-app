@@ -131,7 +131,7 @@ export default class SettingsPage extends React.Component {
               type="button"
               onClick={this.resetClickHandler}
             >
-              Reset
+              Default
             </button>
           </div>
         </form>
