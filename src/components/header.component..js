@@ -1,4 +1,6 @@
 import React, { useState } from "react"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faClock, faChevronLeft, faBible, faTimes, faBars } from "@fortawesome/free-solid-svg-icons"
 import dayjs from "dayjs"
 
 const HeaderComponent = ({
@@ -23,7 +25,7 @@ const HeaderComponent = ({
                   data-element="collapse-menu"
                   onClick={() => setExpandMenu(false)}
                 >
-                  Close
+                  <FontAwesomeIcon icon={faTimes} /> Close
                 </button>
               </li>
               <li className="nav-item">
@@ -56,7 +58,10 @@ const HeaderComponent = ({
             </ul>
           </nav>
 
-          <h1 className="main-header-brand">Proverbs Everyday</h1>
+          <div className="main-header-center">
+            <h1 className="main-header-brand"><FontAwesomeIcon icon={faBible} /> Proverbs Everyday</h1>
+            <p className="main-header-date"><FontAwesomeIcon icon={faClock} /> Today: {today}</p>
+          </div>
 
           <nav className="main-nav main-nav-right">
             <ul className="nav-list" role="list">
@@ -66,7 +71,7 @@ const HeaderComponent = ({
                   type="button"
                   onClick={gotoBack}
                 >
-                  Back
+                  <FontAwesomeIcon icon={faChevronLeft} /> Back
                 </button>
               </li>
               <li className="nav-item">
@@ -76,13 +81,11 @@ const HeaderComponent = ({
                   type="button"
                   onClick={() => setExpandMenu(true)}
                 >
-                  Menu
+                  <FontAwesomeIcon icon={faBars} /> Menu
                 </button>
               </li>
             </ul>
           </nav>
-
-          <p className="main-header-date">Today: {today}</p>
         </div>
       </div>
     </header>

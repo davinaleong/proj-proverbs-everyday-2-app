@@ -1,4 +1,6 @@
 import React from "react"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faSave, faRotateLeft } from "@fortawesome/free-solid-svg-icons"
 
 import themes from "../data/themes.data"
 import preferredTranslations from "../data/preferred-translations.data"
@@ -124,14 +126,14 @@ export default class SettingsPage extends React.Component {
               type="button"
               onClick={this.saveClickHandler}
             >
-              Save
+              <FontAwesomeIcon icon={faSave} /> Save
             </button>
             <button
               className="btn btn-secondary"
               type="button"
               onClick={this.resetClickHandler}
             >
-              Default
+              <FontAwesomeIcon icon={faRotateLeft} /> Default
             </button>
           </div>
         </form>

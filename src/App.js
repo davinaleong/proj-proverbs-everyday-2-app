@@ -1,11 +1,14 @@
 import React from "react"
 import { Helmet } from "react-helmet-async"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faCog } from "@fortawesome/free-solid-svg-icons"
 import dayjs from "dayjs"
 
 import responses from "./data/responses.data"
 
 import FooterComponent from "./components/footer.component"
 import HeaderComponent from "./components/header.component."
+import LoaderComponent from "./components/loader.component"
 import IndexPage from "./pages/index.page"
 import TranslationsPage from "./pages/translations.page"
 import ChaptersPage from "./pages/chapters.page"
@@ -13,9 +16,7 @@ import SettingsPage from "./pages/settings.page"
 
 import UrlHelper from "./helpers/url.helper"
 
-import gear from "./images/gear-solid-white.svg"
 import "./styles/main.scss"
-import LoaderComponent from "./components/loader.component"
 
 export default class App extends React.Component {
   constructor(props) {
@@ -98,7 +99,7 @@ export default class App extends React.Component {
         let chapter = {}
         if (chaptersResult.chapters && chaptersResult.chapters.length > 0) {
           chapter = chaptersResult.chapters.filter(
-            (chapter) => chapter.slug == chapterSlug
+            (chapter) => chapter.slug === chapterSlug
           )[0]
         }
 
@@ -221,7 +222,7 @@ export default class App extends React.Component {
         const { chapters } = data
         let chapter = {}
         if (chapters && chapters.length > 0) {
-          chapter = chapters.filter((chapter) => chapter.slug == chapterSlug)[0]
+          chapter = chapters.filter((chapter) => chapter.slug === chapterSlug)[0]
         }
 
         this.setState({
@@ -256,7 +257,7 @@ export default class App extends React.Component {
     const { settings } = this.state
     const { bookSlug, chapterSlug } = settings
 
-    if (settings.preferredTranslation != preferredTranslation) {
+    if (settings.preferredTranslation !== preferredTranslation) {
       const translation = this.getTranslation(preferredTranslation)
 
       const chaptersUrl = UrlHelper.chapters(preferredTranslation, bookSlug)
@@ -269,7 +270,7 @@ export default class App extends React.Component {
           let chapter = {}
           if (chapters && chapters.length > 0) {
             chapter = chapters.filter(
-              (chapter) => chapter.slug == chapterSlug
+              (chapter) => chapter.slug === chapterSlug
             )[0]
           }
 
@@ -378,7 +379,7 @@ export default class App extends React.Component {
           className="btn btn-action btn-fixed"
           onClick={this.gotoSettingsPage}
         >
-          <img src={gear} alt="Settings" />
+          <FontAwesomeIcon icon={faCog} />
         </button>
       </main>
     )
