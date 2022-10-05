@@ -246,29 +246,73 @@ export default class App extends React.Component {
     preferredTranslation = "kjv",
     textSize = ""
   ) => {
-    const translation = this.getTranslation(preferredTranslation)
-    const chapters = this.getChapters(preferredTranslation)
-    const todayMonth = dayjs().format("M")
+    
+    // const chapters = this.getChapters(preferredTranslation)
+    // const todayMonth = dayjs().format("M")
 
-    let chapter = {}
-    if (chapters) {
-      chapter = chapters.filter(
-        (chapter) => chapter.slug === `chapter-${todayMonth}`
-      )[0]
+    // let chapter = {}
+    // if (chapters) {
+    //   chapter = chapters.filter(
+    //     (chapter) => chapter.slug === `chapter-${todayMonth}`
+    //   )[0]
+    // }
+
+    // this.setState({
+    //   settings: {
+    //     theme,
+    //     preferredTranslation,
+    //     textSize,
+    //   },
+    //   translation,
+    //   chapters,
+    //   chapter,
+    // })
+
+    // this.gotoIndexPage()
+    const { settings } = this.state
+    const { bookSlug, chapterSlug } = settings
+
+    if (settings.preferredTranslation != preferredTranslation) {
+      const translation = this.getTranslation(preferredTranslation)
+
+      const chaptersUrl = UrlHelper.chapters(preferredTranslation, bookSlug)
+      fetch(chaptersUrl, { mode: "cors" })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(`Fetched chapters`)
+
+          const { chapters } = data
+          let chapter = {}
+          if (chapters && chapters.length > 0) {
+            chapter = chapters.filter(
+              (chapter) => chapter.slug == chapterSlug
+            )[0]
+          }
+
+          this.setState({
+            settings: {
+              theme,
+              preferredTranslation,
+              textSize,
+            },
+            translation,
+            chapters,
+            chapter,
+          })
+
+          this.gotoIndexPage()
+        }) // end fetch
+    } else {
+      this.setState({
+        settings: {
+          theme,
+          preferredTranslation,
+          textSize,
+        },
+      })
+
+      this.gotoIndexPage()
     }
-
-    this.setState({
-      settings: {
-        theme,
-        preferredTranslation,
-        textSize,
-      },
-      translation,
-      chapters,
-      chapter,
-    })
-
-    this.gotoIndexPage()
   }
 
   renderPage = () => {
