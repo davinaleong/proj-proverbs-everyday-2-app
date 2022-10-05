@@ -1,6 +1,6 @@
 import dayjs from "dayjs"
 
-const todayMonth = dayjs().format("M")
+const todayMonth = dayjs().format("D")
 
 const defaultSettings = {
     theme: "",

@@ -72,10 +72,9 @@ export default class App extends React.Component {
             },
           })
         }
-      })
+      })// end fetch
 
     const translationsUrl = UrlHelper.translations()
-
     fetch(translationsUrl, { mode: "cors" })
       .then((response) => response.json())
       .then((data) => {
@@ -85,23 +84,31 @@ export default class App extends React.Component {
         this.setState({
           translations,
         })
-      })
+      })// end fetch
 
     const chaptersUrl = UrlHelper.chapters(preferredTranslation, bookSlug)
-    // let chapters = []
-    // if (responses[preferredTranslation].chapters !== undefined) {
-    //   chapters = responses[preferredTranslation].chapters
-    // }
-    // const chapter = chapters.filter(
-    //   (chapter) => chapter.slug === chapterSlug
-    // )[0]
-
     fetch(chaptersUrl, { mode: "cors" })
       .then((response) => response.json())
       .then((data) => {
         console.log(`Fetched chapters`)
-        console.log(data)
-      })
+
+        const { translations, chapters } = data
+        let translation = {}
+        if (translations.length > 0 && translations[0]) {
+          translation = translations[0]
+        }
+
+        let chapter = {}
+        if (chapters && chapters.length > 0) {
+          chapter = chapters.filter(chapter => chapter.slug == chapterSlug)[0]
+        }
+
+        this.setState({
+          translation,
+          chapters,
+          chapter
+        })
+      })// end fetch
   }
 
   getTranslation = (translationSlug) => {
