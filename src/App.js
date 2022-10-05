@@ -2,7 +2,6 @@ import React from "react"
 import { Helmet } from "react-helmet-async"
 import dayjs from "dayjs"
 
-import config from "./data/config.data"
 import responses from "./data/responses.data"
 
 import FooterComponent from "./components/footer.component"
@@ -56,13 +55,23 @@ export default class App extends React.Component {
 
     const metaUrl = UrlHelper.app()
 
-    console.log(`Meta URL`, metaUrl)
-
-    // const meta = responses.proverbsEveryday.apps.filter(app => app.slug === config.slug)[0]
-    fetch(metaUrl)
+    fetch(metaUrl, { mode: "cors" })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data)
+        const { apps } = data
+        if (apps.length > 0) {
+          const app = apps[0]
+          const { meta_title, meta_author, meta_description, meta_keywords } =
+            app
+          this.setState({
+            meta: {
+              meta_title,
+              meta_author,
+              meta_description,
+              meta_keywords,
+            },
+          })
+        }
       })
 
     const translationsUrl = UrlHelper.translations()
