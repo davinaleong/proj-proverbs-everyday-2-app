@@ -50,11 +50,10 @@ export default class App extends React.Component {
   }
 
   componentDidMount = () => {
-    const { meta, settings } = this.state
+    const { settings } = this.state
     const { preferredTranslation, bookSlug, chapterSlug } = settings
 
     const metaUrl = UrlHelper.app()
-
     fetch(metaUrl, { mode: "cors" })
       .then((response) => response.json())
       .then((data) => {
@@ -75,38 +74,37 @@ export default class App extends React.Component {
       })
 
     const translationsUrl = UrlHelper.translations()
-    // const chaptersUrl = `${translationsUrl}${preferredTranslation}/books/${bookSlug}/chapters`
+    console.log(translationsUrl)
+    // const translations = responses.translations.translations.data
+    // const translation = translations.filter(
+    //   (translation) => translation.slug === preferredTranslation
+    // )[0]
+
+    fetch(translationsUrl, { mode: "cors" })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data)
+        const translations = data.translations.data
+
+        this.setState({
+          translations
+        })
+      })
+
     const chaptersUrl = UrlHelper.chapters(preferredTranslation, bookSlug)
+    // let chapters = []
+    // if (responses[preferredTranslation].chapters !== undefined) {
+    //   chapters = responses[preferredTranslation].chapters
+    // }
+    // const chapter = chapters.filter(
+    //   (chapter) => chapter.slug === chapterSlug
+    // )[0]
 
-    console.log(`Translations URL`, translationsUrl)
-    console.log(`Chapters URL`, chaptersUrl)
-
-    const translations = responses.translations.translations.data
-    const translation = translations.filter(
-      (translation) => translation.slug === preferredTranslation
-    )[0]
-
-    let chapters = []
-    if (responses[preferredTranslation].chapters !== undefined) {
-      chapters = responses[preferredTranslation].chapters
-    }
-    const chapter = chapters.filter(
-      (chapter) => chapter.slug === chapterSlug
-    )[0]
-
-    // fetch(translationsApi)
+    // fetch(chaptersUrl, { mode: "cors" })
     //   .then((response) => response.json())
     //   .then((data) => {
     //     console.log(data)
     //   })
-
-    this.setState({
-      meta,
-      translations,
-      translation,
-      chapters,
-      chapter,
-    })
   }
 
   getTranslation = (translationSlug) => {
