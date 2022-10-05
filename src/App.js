@@ -26,7 +26,7 @@ export default class App extends React.Component {
       defaultSettings
 
     this.state = {
-      loading: false,
+      loading: true,
       meta: {
         meta_title: "",
         meta_description: "",
@@ -55,62 +55,62 @@ export default class App extends React.Component {
     const { settings } = this.state
     const { preferredTranslation, bookSlug, chapterSlug } = settings
 
-    const metaUrl = UrlHelper.app()
-    fetch(metaUrl, { mode: "cors" })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(`Fetched meta`)
-        const { apps } = data
+    const urls = [
+      UrlHelper.app(),
+      UrlHelper.translations(),
+      UrlHelper.chapters(preferredTranslation, bookSlug),
+    ]
+
+    Promise.all(urls.map((url) => fetch(url, { mode: "cors" })))
+      .then((response) => Promise.all(response.map((res) => res.json())))
+      .then((results) => {
+        console.log(`Fetched all data.`)
+        console.log(results)
+
+        const metaResult = results[0]
+        const translationsResult = results[1]
+        const chaptersResult = results[2]
+
+        const { apps } = metaResult
+        let meta = {}
         if (apps.length > 0) {
           const app = apps[0]
           const { meta_title, meta_author, meta_description, meta_keywords } =
             app
-          this.setState({
-            meta: {
-              meta_title,
-              meta_author,
-              meta_description,
-              meta_keywords,
-            },
-          })
+          meta = {
+            meta_title,
+            meta_author,
+            meta_description,
+            meta_keywords,
+          }
         }
-      }) // end fetch
 
-    const translationsUrl = UrlHelper.translations()
-    fetch(translationsUrl, { mode: "cors" })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(`Fetched translations`)
-        const translations = data.translations.data
+        const translations = translationsResult.translations.data
 
-        this.setState({
-          translations,
-        })
-      }) // end fetch
-
-    const chaptersUrl = UrlHelper.chapters(preferredTranslation, bookSlug)
-    fetch(chaptersUrl, { mode: "cors" })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(`Fetched chapters`)
-
-        const { translations, chapters } = data
         let translation = {}
-        if (translations.length > 0 && translations[0]) {
-          translation = translations[0]
+        if (
+          chaptersResult.translations.length > 0 &&
+          chaptersResult.translations[0]
+        ) {
+          translation = chaptersResult.translations[0]
         }
 
         let chapter = {}
-        if (chapters && chapters.length > 0) {
-          chapter = chapters.filter((chapter) => chapter.slug == chapterSlug)[0]
+        if (chaptersResult.chapters && chaptersResult.chapters.length > 0) {
+          chapter = chaptersResult.chapters.filter(
+            (chapter) => chapter.slug == chapterSlug
+          )[0]
         }
 
         this.setState({
+          loading: false,
+          meta,
+          translations,
           translation,
-          chapters,
+          chapters: chaptersResult.chapters,
           chapter,
         })
-      }) // end fetch
+      })
   }
 
   getTranslation = (translationSlug) => {
@@ -192,11 +192,11 @@ export default class App extends React.Component {
   }
 
   todaysProverbClickHandler = () => {
-    const { chapters } = this.state
+    const { settings, chapters } = this.state
+    const { chapterSlug } = settings
 
-    const todayMonth = dayjs().format("M")
     const chapter = chapters.filter(
-      (chapter) => chapter.slug === `chapter-${todayMonth}`
+      (chapter) => chapter.slug === chapterSlug
     )[0]
 
     this.setState({
