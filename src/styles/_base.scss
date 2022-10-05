@@ -515,6 +515,33 @@ a:where(:hover, :focus, :focus-within) {
   }
 }
 
+.loader {
+  font-size: var(--fsize-large);
+}
+
+.loader::after {
+  content: "\2026";
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: bottom;
+  -webkit-animation: ellipsis steps(4, end) 900ms infinite;
+  animation: ellipsis steps(4, end) 900ms infinite;
+  /* ascii code for the ellipsis character */
+  width: 0px;
+}
+
+@keyframes ellipsis {
+  to {
+      width: 1em;
+  }
+}
+
+@-webkit-keyframes ellipsis {
+  to {
+      width: 1em;
+  }
+}
+
 .text {
   font-size: var(--fsize-regular);
 }

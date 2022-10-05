@@ -15,6 +15,7 @@ import UrlHelper from "./helpers/url.helper"
 
 import gear from "./images/gear-solid-white.svg"
 import "./styles/main.scss"
+import LoaderComponent from "./components/loader.component"
 
 export default class App extends React.Component {
   constructor(props) {
@@ -25,6 +26,7 @@ export default class App extends React.Component {
       defaultSettings
 
     this.state = {
+      loading: false,
       meta: {
         meta_title: "",
         meta_description: "",
@@ -205,6 +207,7 @@ export default class App extends React.Component {
   }
 
   translationClickHandler = (translationSlug = "kjv") => {
+    this.setState({ loading: true })
     const translation = this.getTranslation(translationSlug)
     const { settings } = this.state
     const { bookSlug, chapterSlug } = settings
@@ -222,6 +225,7 @@ export default class App extends React.Component {
         }
 
         this.setState({
+          loading: false,
           translation,
           chapters,
           chapter,
@@ -232,9 +236,11 @@ export default class App extends React.Component {
   }
 
   chapterClickHandler = (chapterSlug = "chapter-1") => {
+    this.setState({ loading: true })
     const chapter = this.getChapter(chapterSlug)
 
     this.setState({
+      loading: false,
       chapter,
     })
 
@@ -246,29 +252,7 @@ export default class App extends React.Component {
     preferredTranslation = "kjv",
     textSize = ""
   ) => {
-    
-    // const chapters = this.getChapters(preferredTranslation)
-    // const todayMonth = dayjs().format("M")
-
-    // let chapter = {}
-    // if (chapters) {
-    //   chapter = chapters.filter(
-    //     (chapter) => chapter.slug === `chapter-${todayMonth}`
-    //   )[0]
-    // }
-
-    // this.setState({
-    //   settings: {
-    //     theme,
-    //     preferredTranslation,
-    //     textSize,
-    //   },
-    //   translation,
-    //   chapters,
-    //   chapter,
-    // })
-
-    // this.gotoIndexPage()
+    this.setState({ loading: true })
     const { settings } = this.state
     const { bookSlug, chapterSlug } = settings
 
@@ -290,6 +274,7 @@ export default class App extends React.Component {
           }
 
           this.setState({
+            loading: false,
             settings: {
               theme,
               preferredTranslation,
@@ -304,6 +289,7 @@ export default class App extends React.Component {
         }) // end fetch
     } else {
       this.setState({
+        loading: false,
         settings: {
           theme,
           preferredTranslation,
@@ -361,9 +347,11 @@ export default class App extends React.Component {
   }
 
   render = () => {
-    const { meta, settings } = this.state
+    const { loading, meta, settings } = this.state
     const { meta_title, meta_author, meta_description, meta_keywords } = meta
     const mainClass = `main-grid ${settings.theme}`
+
+    const content = loading ? <LoaderComponent /> : this.renderPage()
 
     return (
       <main className={mainClass}>
@@ -381,7 +369,7 @@ export default class App extends React.Component {
           gotoChaptersPage={this.gotoChaptersPage}
         />
 
-        <div className="content container | p-y-400">{this.renderPage()}</div>
+        <div className="content container | p-y-400">{content}</div>
 
         <FooterComponent />
 
