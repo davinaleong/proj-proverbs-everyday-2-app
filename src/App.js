@@ -72,7 +72,7 @@ export default class App extends React.Component {
             },
           })
         }
-      })// end fetch
+      }) // end fetch
 
     const translationsUrl = UrlHelper.translations()
     fetch(translationsUrl, { mode: "cors" })
@@ -84,7 +84,7 @@ export default class App extends React.Component {
         this.setState({
           translations,
         })
-      })// end fetch
+      }) // end fetch
 
     const chaptersUrl = UrlHelper.chapters(preferredTranslation, bookSlug)
     fetch(chaptersUrl, { mode: "cors" })
@@ -100,15 +100,15 @@ export default class App extends React.Component {
 
         let chapter = {}
         if (chapters && chapters.length > 0) {
-          chapter = chapters.filter(chapter => chapter.slug == chapterSlug)[0]
+          chapter = chapters.filter((chapter) => chapter.slug == chapterSlug)[0]
         }
 
         this.setState({
           translation,
           chapters,
-          chapter
+          chapter,
         })
-      })// end fetch
+      }) // end fetch
   }
 
   getTranslation = (translationSlug) => {
@@ -206,25 +206,29 @@ export default class App extends React.Component {
 
   translationClickHandler = (translationSlug = "kjv") => {
     const translation = this.getTranslation(translationSlug)
+    const { settings } = this.state
+    const { bookSlug, chapterSlug } = settings
 
-    let chapters = []
-    let chapter = {}
-    if (responses[translation.slug].chapters !== undefined) {
-      chapters = responses[translation.slug].chapters
+    const chaptersUrl = UrlHelper.chapters(translationSlug, bookSlug)
+    fetch(chaptersUrl, { mode: "cors" })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(`Fetched chapters`)
 
-      const todayMonth = dayjs().format("M")
-      chapter = chapters.filter(
-        (chapter) => chapter.slug === `chapter-${todayMonth}`
-      )[0]
-    }
+        const { chapters } = data
+        let chapter = {}
+        if (chapters && chapters.length > 0) {
+          chapter = chapters.filter((chapter) => chapter.slug == chapterSlug)[0]
+        }
 
-    this.setState({
-      translation,
-      chapters,
-      chapter,
-    })
+        this.setState({
+          translation,
+          chapters,
+          chapter,
+        })
 
-    this.gotoIndexPage()
+        this.gotoIndexPage()
+      }) // end fetch
   }
 
   chapterClickHandler = (chapterSlug = "chapter-1") => {
