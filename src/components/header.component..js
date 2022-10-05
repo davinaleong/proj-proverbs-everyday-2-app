@@ -1,6 +1,12 @@
 import React, { useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faClock, faChevronLeft, faBible, faTimes, faBars } from "@fortawesome/free-solid-svg-icons"
+import {
+  faClock,
+  faChevronLeft,
+  faBible,
+  faTimes,
+  faBars,
+} from "@fortawesome/free-solid-svg-icons"
 import dayjs from "dayjs"
 
 const HeaderComponent = ({
@@ -17,7 +23,7 @@ const HeaderComponent = ({
       <div className="container">
         <div className="main-header-grid | p-y-200">
           <nav className="main-nav main-nav-left">
-            <ul className="nav-list" role="list">
+            <ul className="nav-list">
               <li className="nav-item">
                 <button
                   className="btn btn-link"
@@ -59,12 +65,16 @@ const HeaderComponent = ({
           </nav>
 
           <div className="main-header-center">
-            <h1 className="main-header-brand"><FontAwesomeIcon icon={faBible} /> Proverbs Everyday</h1>
-            <p className="main-header-date"><FontAwesomeIcon icon={faClock} /> Today: {today}</p>
+            <h1 className="main-header-brand">
+              <FontAwesomeIcon icon={faBible} /> Proverbs Everyday
+            </h1>
+            <p className="main-header-date">
+              <FontAwesomeIcon icon={faClock} /> Today: {today}
+            </p>
           </div>
 
           <nav className="main-nav main-nav-right">
-            <ul className="nav-list" role="list">
+            <ul className="nav-list">
               <li className="nav-item">
                 <button
                   className="btn btn-link"
