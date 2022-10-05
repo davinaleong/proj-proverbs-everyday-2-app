@@ -57,6 +57,7 @@ export default class App extends React.Component {
     fetch(metaUrl, { mode: "cors" })
       .then((response) => response.json())
       .then((data) => {
+        console.log(`Fetched meta`)
         const { apps } = data
         if (apps.length > 0) {
           const app = apps[0]
@@ -74,20 +75,15 @@ export default class App extends React.Component {
       })
 
     const translationsUrl = UrlHelper.translations()
-    console.log(translationsUrl)
-    // const translations = responses.translations.translations.data
-    // const translation = translations.filter(
-    //   (translation) => translation.slug === preferredTranslation
-    // )[0]
 
     fetch(translationsUrl, { mode: "cors" })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data)
+        console.log(`Fetched translations`)
         const translations = data.translations.data
 
         this.setState({
-          translations
+          translations,
         })
       })
 
@@ -100,11 +96,12 @@ export default class App extends React.Component {
     //   (chapter) => chapter.slug === chapterSlug
     // )[0]
 
-    // fetch(chaptersUrl, { mode: "cors" })
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     console.log(data)
-    //   })
+    fetch(chaptersUrl, { mode: "cors" })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(`Fetched chapters`)
+        console.log(data)
+      })
   }
 
   getTranslation = (translationSlug) => {
