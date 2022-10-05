@@ -12,6 +12,8 @@ import TranslationsPage from "./pages/translations.page"
 import ChaptersPage from "./pages/chapters.page"
 import SettingsPage from "./pages/settings.page"
 
+import UrlHelper from "./helpers/url.helper"
+
 import gear from "./images/gear-solid-white.svg"
 import "./styles/main.scss"
 
@@ -49,19 +51,23 @@ export default class App extends React.Component {
   }
 
   componentDidMount = () => {
-    console.log(`TODO: Get Translations & Chapter from API`)
-
-    const { settings } = this.state
+    const { meta, settings } = this.state
     const { preferredTranslation, bookSlug, chapterSlug } = settings
 
-    const metaUrl = `${config.apis.apps}${config.slug}/`
+    const metaUrl = UrlHelper.app()
 
     console.log(`Meta URL`, metaUrl)
 
-    const meta = responses.proverbsEveryday.apps.filter(app => app.slug === config.slug)[0]
+    // const meta = responses.proverbsEveryday.apps.filter(app => app.slug === config.slug)[0]
+    fetch(metaUrl)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data)
+      })
 
-    const translationsUrl = `${config.apis.bible}translations/`
-    const chaptersUrl = `${translationsUrl}${preferredTranslation}/books/${bookSlug}/chapters`
+    const translationsUrl = UrlHelper.translations()
+    // const chaptersUrl = `${translationsUrl}${preferredTranslation}/books/${bookSlug}/chapters`
+    const chaptersUrl = UrlHelper.chapters(preferredTranslation, bookSlug)
 
     console.log(`Translations URL`, translationsUrl)
     console.log(`Chapters URL`, chaptersUrl)
