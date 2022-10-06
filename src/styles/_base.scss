@@ -499,10 +499,14 @@ a:where(:hover, :focus, :focus-within) {
 }
 
 .loader {
+  color: var(--clr-text);
+}
+
+.loader-text {
   font-size: var(--fsize-large);
 }
 
-.loader::after {
+.loader-text::after {
   content: "\2026";
   overflow: hidden;
   display: inline-block;
@@ -511,6 +515,15 @@ a:where(:hover, :focus, :focus-within) {
   animation: ellipsis steps(4, end) 900ms infinite;
   /* ascii code for the ellipsis character */
   width: 0px;
+}
+
+.loader-icon {
+  width: 100%;
+  min-height: calc(100vh - var(--height-header) - var(--height-footer));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: size(900);
 }
 
 @keyframes ellipsis {

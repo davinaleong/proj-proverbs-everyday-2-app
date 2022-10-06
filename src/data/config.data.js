@@ -1,11 +1,13 @@
+const envVars = process.env
+
 const config = {
   appName: "Proverbs Everyday",
   author: "Davina Leong",
   dateStarted: "2022-09-28",
   slug: "proverbs-everyday",
   apis: {
-    bible: "/api/bible/",
-    apps: "/api/misc/apps/",
+    bible: envVars.REACT_APP_API_BIBLE_URL,
+    apps: envVars.REACT_APP_API_APPS_URL,
   },
   meta: {
     metaTitle: "Proverbs Everyday",

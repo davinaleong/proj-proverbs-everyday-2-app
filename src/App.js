@@ -8,7 +8,7 @@ import responses from "./data/responses.data"
 
 import FooterComponent from "./components/footer.component"
 import HeaderComponent from "./components/header.component."
-import LoaderComponent from "./components/loader.component"
+import LoaderIconComponent from "./components/loader-icon.component"
 import IndexPage from "./pages/index.page"
 import TranslationsPage from "./pages/translations.page"
 import ChaptersPage from "./pages/chapters.page"
@@ -352,7 +352,7 @@ export default class App extends React.Component {
     const { meta_title, meta_author, meta_description, meta_keywords } = meta
     const mainClass = `main-grid ${settings.theme}`
 
-    const content = loading ? <LoaderComponent /> : this.renderPage()
+    const content = loading ? <LoaderIconComponent /> : this.renderPage()
 
     return (
       <main className={mainClass}>
