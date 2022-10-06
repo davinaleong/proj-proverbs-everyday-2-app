@@ -62,13 +62,15 @@ export default class App extends React.Component {
     const { defaultSettings } = this.props
     const { bookSlug, chapterSlug } = defaultSettings
 
-    const cachedSettings = JSON.parse(window.localStorage.getItem(ConfigData.cacheKey))
+    const cachedSettings = JSON.parse(
+      window.localStorage.getItem(ConfigData.cacheKey)
+    )
     if (cachedSettings) {
       cachedSettings.chapterSlug = chapterSlug
     }
 
     const settings = cachedSettings ? cachedSettings : this.state.settings
-    
+
     const { preferredTranslation } = settings
 
     const urls = [
@@ -257,7 +259,10 @@ export default class App extends React.Component {
     newSettings.allowCache = allowCache
 
     if (allowCache) {
-      window.localStorage.setItem(ConfigData.cacheKey, JSON.stringify(newSettings))
+      window.localStorage.setItem(
+        ConfigData.cacheKey,
+        JSON.stringify(newSettings)
+      )
     }
 
     if (settings.preferredTranslation !== preferredTranslation) {
