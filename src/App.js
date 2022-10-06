@@ -5,6 +5,7 @@ import { faCog } from "@fortawesome/free-solid-svg-icons"
 import dayjs from "dayjs"
 
 import responses from "./data/responses.data"
+import config from "./data/config.data"
 
 import FooterComponent from "./components/footer.component"
 import HeaderComponent from "./components/header.component."
@@ -60,6 +61,8 @@ export default class App extends React.Component {
   }
 
   componentDidMount = () => {
+    // TODO: Load settings from cache
+    
     const { settings } = this.state
     const { preferredTranslation, bookSlug, chapterSlug } = settings
 
@@ -128,13 +131,8 @@ export default class App extends React.Component {
     })[0]
   }
 
-  getChapters = (translationSlug) => {
-    let chapters = []
-    if (responses[translationSlug].chapters !== undefined) {
-      chapters = responses[translationSlug].chapters
-    }
-
-    return chapters
+  getChapters = () => {
+    return this.state.chapters
   }
 
   getChapter = (chapterSlug) => {
@@ -270,6 +268,16 @@ export default class App extends React.Component {
     const { settings } = this.state
     const { bookSlug, chapterSlug } = settings
 
+    const newSettings = settings
+    newSettings.theme = theme
+    newSettings.preferredTranslation = preferredTranslation
+    newSettings.textSize = textSize
+    newSettings.allowCache = allowCache
+
+    if (allowCache) {
+      window.localStorage.setItem(config.cacheKey, JSON.stringify(newSettings))
+    }
+
     if (settings.preferredTranslation !== preferredTranslation) {
       const translation = this.getTranslation(preferredTranslation)
 
@@ -289,12 +297,7 @@ export default class App extends React.Component {
 
           this.setState({
             loading: false,
-            settings: {
-              theme,
-              preferredTranslation,
-              textSize,
-              allowCache,
-            },
+            settings: newSettings,
             translation,
             chapters,
             chapter,
@@ -305,12 +308,7 @@ export default class App extends React.Component {
     } else {
       this.setState({
         loading: false,
-        settings: {
-          theme,
-          preferredTranslation,
-          textSize,
-          allowCache,
-        },
+        settings: newSettings,
       })
 
       this.gotoIndexPage()

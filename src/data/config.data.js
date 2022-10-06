@@ -17,6 +17,7 @@ const config = {
     metaKeywords:
       "proverbs everyday, proverbs, everyday, daily, bible, jesus, jesus christ, christ, proverb, proverb everyday, christian, reactjs, html, css, sass, scss, html5, css3",
   },
+  cacheKey: "proverbsEverydayV2Settings",
 }
 
 export default config
