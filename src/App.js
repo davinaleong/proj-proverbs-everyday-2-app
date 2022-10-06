@@ -1,7 +1,12 @@
 import React from "react"
 import { Helmet } from "react-helmet-async"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faCog } from "@fortawesome/free-solid-svg-icons"
+import {
+  faCog,
+  faTimes,
+  faBan,
+  faCheck,
+} from "@fortawesome/free-solid-svg-icons"
 import dayjs from "dayjs"
 
 import responses from "./data/responses.data"
@@ -66,7 +71,6 @@ export default class App extends React.Component {
       .then((response) => Promise.all(response.map((res) => res.json())))
       .then((results) => {
         console.log(`Fetched all data.`)
-        console.log(results)
 
         const metaResult = results[0]
         const translationsResult = results[1]
@@ -222,7 +226,9 @@ export default class App extends React.Component {
         const { chapters } = data
         let chapter = {}
         if (chapters && chapters.length > 0) {
-          chapter = chapters.filter((chapter) => chapter.slug === chapterSlug)[0]
+          chapter = chapters.filter(
+            (chapter) => chapter.slug === chapterSlug
+          )[0]
         }
 
         this.setState({
@@ -373,6 +379,41 @@ export default class App extends React.Component {
         <div className="content container | p-y-400">{content}</div>
 
         <FooterComponent />
+
+        <div className="modal" data-open="true">
+          <div className="modal-dialog">
+            <div className="modal-header">
+              <h2 className="modal-heading">Lorem Ipsum</h2>
+              <button
+                className="btn btn-text btn-text-neutral"
+                data-element="close-modal"
+              >
+                <FontAwesomeIcon icon={faTimes} />
+              </button>
+            </div>
+
+            <div className="modal-body">
+              <p>
+                Sed porttitor lectus nibh. Vestibulum ante ipsum primis in
+                faucibus orci luctus et ultrices posuere cubilia Curae; Donec
+                velit neque, auctor sit amet aliquam vel, ullamcorper sit amet
+                ligula.{" "}
+              </p>
+            </div>
+
+            <div className="modal-footer">
+              <button className="btn btn-text btn-text-success">
+                <FontAwesomeIcon icon={faCheck} /> Yes
+              </button>
+              <button className="btn btn-text btn-text-danger">
+                <FontAwesomeIcon icon={faTimes} /> No
+              </button>
+              <button className="btn btn-text btn-text-neutral">
+                <FontAwesomeIcon icon={faBan} /> Cancel
+              </button>
+            </div>
+          </div>
+        </div>
 
         <button
           type="button"

@@ -493,6 +493,7 @@ $justify-items: (
 
 // C.11. Box Shadows
 $box-shadows: (
+  "none": none,
   400: #{0.1em 0.1em 0.3em 0 hsla(0, 0%, 0%, 0.2)},
 );
 

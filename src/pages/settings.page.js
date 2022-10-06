@@ -122,14 +122,14 @@ export default class SettingsPage extends React.Component {
 
           <div className="form-buttons-flex">
             <button
-              className="btn btn-primary"
+              className="btn btn-action"
               type="button"
               onClick={this.saveClickHandler}
             >
               <FontAwesomeIcon icon={faSave} /> Save
             </button>
             <button
-              className="btn btn-secondary"
+              className="btn btn-neutral"
               type="button"
               onClick={this.resetClickHandler}
             >
