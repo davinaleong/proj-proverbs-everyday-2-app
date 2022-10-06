@@ -1,11 +1,13 @@
 import React from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faSave, faRotateLeft } from "@fortawesome/free-solid-svg-icons"
+import { faSave, faRotateLeft, faTrashAlt } from "@fortawesome/free-solid-svg-icons"
 
+import ModalComponent from "../components/modal.component"
+
+import config from "../data/config.data"
 import themes from "../data/themes.data"
 import preferredTranslations from "../data/preferred-translations.data"
 import textSizes from "../data/text-sizes.data"
-import ModalComponent from "../components/modal.component"
 
 export default class SettingsPage extends React.Component {
   constructor(props) {
@@ -60,6 +62,11 @@ export default class SettingsPage extends React.Component {
     })
   }
 
+  removeClickHandler = (e) => {
+    console.log(`Remove cached settings.`)
+    window.localStorage.removeItem(config.cacheKey)
+  }
+
   // Modal click handlers
   closeClickHandler = (e) => {
     console.log(`Modal CLOSE button clicked.`)
@@ -107,7 +114,9 @@ export default class SettingsPage extends React.Component {
   }
 
   render = () => {
-    const { toggleModal, theme, preferredTranslation, textSize } = this.state
+    const { toggleModal, theme, preferredTranslation, textSize, allowCache } = this.state
+    const note = allowCache ? (<p>Settings will be saved to your browser's cache when "Save" is clicked.</p>) : <></>
+
     return (
       <>
         <h2 className="page-heading p-b-400">Settings</h2>
@@ -161,6 +170,7 @@ export default class SettingsPage extends React.Component {
           <p className="clr-danger-400">
             Click "save" for changes to take place.
           </p>
+          {note}
 
           <div className="form-buttons-flex">
             <button
@@ -176,6 +186,13 @@ export default class SettingsPage extends React.Component {
               onClick={this.resetClickHandler}
             >
               <FontAwesomeIcon icon={faRotateLeft} /> Default
+            </button>
+            <button
+              className="btn btn-neutral"
+              type="button"
+              onClick={this.removeClickHandler}
+            >
+              <FontAwesomeIcon icon={faTrashAlt} /> Remove Cached Settings
             </button>
           </div>
         </form>

@@ -61,10 +61,17 @@ export default class App extends React.Component {
   }
 
   componentDidMount = () => {
-    // TODO: Load settings from cache
+    const { defaultSettings } = this.props
+    const { bookSlug, chapterSlug } = defaultSettings
+
+    const cachedSettings = JSON.parse(window.localStorage.getItem(config.cacheKey))
+    if (cachedSettings) {
+      cachedSettings.chapterSlug = chapterSlug
+    }
+
+    const settings = cachedSettings ? cachedSettings : this.state.settings
     
-    const { settings } = this.state
-    const { preferredTranslation, bookSlug, chapterSlug } = settings
+    const { preferredTranslation } = settings
 
     const urls = [
       UrlHelper.app(),
@@ -114,6 +121,7 @@ export default class App extends React.Component {
 
         this.setState({
           loading: false,
+          settings,
           meta,
           translations,
           translation,
@@ -137,7 +145,7 @@ export default class App extends React.Component {
 
   getChapter = (chapterSlug) => {
     const { chapters } = this.state
-    return chapters.filter((chapter) => chapterSlug === chapter.slug)[0]
+    return chapters.filter((chapter) => chapter.slug === chapterSlug)[0]
   }
 
   // Setters
@@ -152,30 +160,6 @@ export default class App extends React.Component {
         },
       })
     }
-  }
-
-  setTranslation = (translationSlug = "kjv") => {
-    const translation = this.getTranslation(translationSlug)
-
-    let chapters = []
-    if (responses[translation.slug].chapters !== undefined) {
-      chapters = responses[translation.slug].chapters
-    }
-
-    this.setState({
-      translation: translation,
-      chapters: chapters,
-    })
-  }
-
-  setChapter = (chapterSlug = "") => {
-    const todayMonth = dayjs().format("M")
-    const thisChapterSlug =
-      chapterSlug === "" ? `chapter-${todayMonth}` : chapterSlug
-
-    this.setState({
-      chapter: this.getChapter(thisChapterSlug),
-    })
   }
 
   // Go to Pages
