@@ -1,12 +1,7 @@
 import React from "react"
 import { Helmet } from "react-helmet-async"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import {
-  faCog,
-  faTimes,
-  faBan,
-  faCheck,
-} from "@fortawesome/free-solid-svg-icons"
+import { faCog } from "@fortawesome/free-solid-svg-icons"
 import dayjs from "dayjs"
 
 import responses from "./data/responses.data"
@@ -28,8 +23,14 @@ export default class App extends React.Component {
     super(props)
 
     const { pageStates, defaultSettings } = this.props
-    const { theme, preferredTranslation, bookSlug, chapterSlug, textSize } =
-      defaultSettings
+    const {
+      theme,
+      preferredTranslation,
+      bookSlug,
+      chapterSlug,
+      textSize,
+      allowCache,
+    } = defaultSettings
 
     this.state = {
       loading: true,
@@ -49,6 +50,7 @@ export default class App extends React.Component {
         textSize,
         bookSlug,
         chapterSlug,
+        allowCache,
       },
       translations: [],
       translation: {},
@@ -118,6 +120,7 @@ export default class App extends React.Component {
       })
   }
 
+  // Getters
   getTranslation = (translationSlug) => {
     const { translations } = this.state
     return translations.filter((translation) => {
@@ -139,6 +142,7 @@ export default class App extends React.Component {
     return chapters.filter((chapter) => chapterSlug === chapter.slug)[0]
   }
 
+  // Setters
   setPage = (next = "") => {
     if (next && next !== "") {
       const previous = this.state.page.current
@@ -176,6 +180,7 @@ export default class App extends React.Component {
     })
   }
 
+  // Go to Pages
   gotoBack = () => {
     this.setPage(this.state.page.previous)
   }
@@ -196,6 +201,7 @@ export default class App extends React.Component {
     this.setPage(this.props.pageStates.SETTINGS)
   }
 
+  // Page button click handlers
   todaysProverbClickHandler = () => {
     const { settings, chapters } = this.state
     const { chapterSlug } = settings
@@ -257,7 +263,8 @@ export default class App extends React.Component {
   saveClickHandler = (
     theme = "",
     preferredTranslation = "kjv",
-    textSize = ""
+    textSize = "",
+    allowCache = false
   ) => {
     this.setState({ loading: true })
     const { settings } = this.state
@@ -286,6 +293,7 @@ export default class App extends React.Component {
               theme,
               preferredTranslation,
               textSize,
+              allowCache,
             },
             translation,
             chapters,
@@ -301,6 +309,7 @@ export default class App extends React.Component {
           theme,
           preferredTranslation,
           textSize,
+          allowCache,
         },
       })
 
@@ -379,41 +388,6 @@ export default class App extends React.Component {
         <div className="content container | p-y-400">{content}</div>
 
         <FooterComponent />
-
-        <div className="modal" data-open="true">
-          <div className="modal-dialog">
-            <div className="modal-header">
-              <h2 className="modal-heading">Lorem Ipsum</h2>
-              <button
-                className="btn btn-text btn-text-neutral"
-                data-element="close-modal"
-              >
-                <FontAwesomeIcon icon={faTimes} />
-              </button>
-            </div>
-
-            <div className="modal-body">
-              <p>
-                Sed porttitor lectus nibh. Vestibulum ante ipsum primis in
-                faucibus orci luctus et ultrices posuere cubilia Curae; Donec
-                velit neque, auctor sit amet aliquam vel, ullamcorper sit amet
-                ligula.{" "}
-              </p>
-            </div>
-
-            <div className="modal-footer">
-              <button className="btn btn-text btn-text-success">
-                <FontAwesomeIcon icon={faCheck} /> Yes
-              </button>
-              <button className="btn btn-text btn-text-danger">
-                <FontAwesomeIcon icon={faTimes} /> No
-              </button>
-              <button className="btn btn-text btn-text-neutral">
-                <FontAwesomeIcon icon={faBan} /> Cancel
-              </button>
-            </div>
-          </div>
-        </div>
 
         <button
           type="button"

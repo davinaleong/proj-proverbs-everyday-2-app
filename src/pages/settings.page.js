@@ -5,35 +5,25 @@ import { faSave, faRotateLeft } from "@fortawesome/free-solid-svg-icons"
 import themes from "../data/themes.data"
 import preferredTranslations from "../data/preferred-translations.data"
 import textSizes from "../data/text-sizes.data"
+import ModalComponent from "../components/modal.component"
 
 export default class SettingsPage extends React.Component {
   constructor(props) {
     super(props)
 
     const { settings } = this.props
-    const { theme, preferredTranslation, textSize } = settings
+    const { theme, preferredTranslation, textSize, allowCache } = settings
 
     this.state = {
+      toggleModal: true,
       theme: theme,
       preferredTranslation: preferredTranslation,
       textSize: textSize,
+      allowCache,
     }
   }
 
-  renderOptions = (options, optionKey) => {
-    const optionsJsx = []
-
-    options.forEach(({ name, value }, index) => {
-      optionsJsx.push(
-        <option value={value} key={`o` + optionKey + index}>
-          {name}
-        </option>
-      )
-    })
-
-    return optionsJsx
-  }
-
+  // Form input change handlers
   themeChangeHandler = (e) => {
     this.setState({
       theme: e.target.value,
@@ -53,8 +43,13 @@ export default class SettingsPage extends React.Component {
   }
 
   saveClickHandler = (e) => {
-    const { theme, preferredTranslation, textSize } = this.state
-    this.props.saveClickHandler(theme, preferredTranslation, textSize)
+    const { theme, preferredTranslation, textSize, allowCache } = this.state
+    this.props.saveClickHandler(
+      theme,
+      preferredTranslation,
+      textSize,
+      allowCache
+    )
   }
 
   resetClickHandler = (e) => {
@@ -65,7 +60,54 @@ export default class SettingsPage extends React.Component {
     })
   }
 
+  // Modal click handlers
+  closeClickHandler = (e) => {
+    console.log(`Modal CLOSE button clicked.`)
+    this.setState({
+      toggleModal: false,
+    })
+  }
+
+  yesClickHandler = (e) => {
+    console.log(`Modal YES button clicked.`)
+    this.setState({
+      toggleModal: false,
+      allowCache: true,
+    })
+  }
+
+  noClickHandler = (e) => {
+    console.log(`Modal NO button clicked.`)
+    this.setState({
+      toggleModal: false,
+      allowCache: false,
+    })
+  }
+
+  cancelClickHandler = (e) => {
+    console.log(`Modal CANCEL button clicked.`)
+    this.setState({
+      toggleModal: false,
+    })
+  }
+
+  // Render functions
+  renderOptions = (options, optionKey) => {
+    const optionsJsx = []
+
+    options.forEach(({ name, value }, index) => {
+      optionsJsx.push(
+        <option value={value} key={`o` + optionKey + index}>
+          {name}
+        </option>
+      )
+    })
+
+    return optionsJsx
+  }
+
   render = () => {
+    const { toggleModal, theme, preferredTranslation, textSize } = this.state
     return (
       <>
         <h2 className="page-heading p-b-400">Settings</h2>
@@ -79,7 +121,7 @@ export default class SettingsPage extends React.Component {
               name="theme"
               id="theme"
               className="form-input"
-              value={this.state.theme}
+              value={theme}
               onChange={this.themeChangeHandler}
             >
               {this.renderOptions(themes, `t`)}
@@ -94,7 +136,7 @@ export default class SettingsPage extends React.Component {
               name="preferredTranslations"
               id="preferredTranslations"
               className="form-input"
-              value={this.state.preferredTranslation}
+              value={preferredTranslation}
               onChange={this.preferredTranslationChangeHandler}
             >
               {this.renderOptions(preferredTranslations, `pt`)}
@@ -109,7 +151,7 @@ export default class SettingsPage extends React.Component {
               name="textSize"
               id="textSize"
               className="form-input"
-              value={this.state.textSize}
+              value={textSize}
               onChange={this.textSizeChangeHandler}
             >
               {this.renderOptions(textSizes, `ts`)}
@@ -137,6 +179,17 @@ export default class SettingsPage extends React.Component {
             </button>
           </div>
         </form>
+
+        <ModalComponent
+          toggleModal={toggleModal}
+          heading="Notice!"
+          closeClickHandler={this.closeClickHandler}
+          yesClickHandler={this.yesClickHandler}
+          noClickHandler={this.noClickHandler}
+          cancelClickHandler={this.cancelClickHandler}
+        >
+          Allow settings to be saved in your brower's cache?
+        </ModalComponent>
       </>
     )
   }

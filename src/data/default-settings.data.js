@@ -8,6 +8,7 @@ const defaultSettings = {
     bookSlug: "prov",
     chapterSlug: `chapter-${todayMonth}`,
     textSize: "",
+    allowCache: false,
 }
 
 export default defaultSettings
