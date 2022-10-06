@@ -44,5 +44,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://davinas-cms.herokuapp.com"
+  "proxy": "https://davinas-cms.herokuapp.com"
 }
