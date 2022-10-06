@@ -1,8 +1,8 @@
-const pageStates = {
+const PageStates = {
   INDEX: "INDEX",
   TRANSLATIONS: "TRANSLATIONS",
   CHAPTERS: "CHAPTERS",
   SETTINGS: "SETTINGS",
 }
 
-export default pageStates
+export default PageStates

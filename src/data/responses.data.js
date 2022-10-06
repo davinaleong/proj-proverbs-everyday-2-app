@@ -1,4 +1,4 @@
-const responses = {
+const ResponsesData = {
   proverbsEveryday: {
     status: "SUCCESS",
     message: "GET data SUCCESS.",
@@ -618,4 +618,4 @@ const responses = {
   },
 }
 
-export default responses
+export default ResponsesData

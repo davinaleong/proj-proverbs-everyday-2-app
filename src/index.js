@@ -4,18 +4,18 @@ import { HelmetProvider } from "react-helmet-async"
 import App from "./App"
 import reportWebVitals from "./reportWebVitals"
 
-import menuStates from "./data/menu.states.data"
-import pageStates from "./data/page.states.data"
-import defaultSettings from "./data/default-settings.data"
+import MenuStatesData from "./data/menu.states.data"
+import PageStatesData from "./data/page.states.data"
+import DefaultSettingsData from "./data/default-settings.data"
 
 const root = ReactDOM.createRoot(document.getElementById("root"))
 root.render(
   <React.StrictMode>
     <HelmetProvider>
       <App
-        menuStates={menuStates}
-        pageStates={pageStates}
-        defaultSettings={defaultSettings}
+        menuStates={MenuStatesData}
+        pageStates={PageStatesData}
+        defaultSettings={DefaultSettingsData}
       />
     </HelmetProvider>
   </React.StrictMode>

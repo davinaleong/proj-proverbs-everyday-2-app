@@ -2,7 +2,7 @@ import dayjs from "dayjs"
 
 const todayMonth = dayjs().format("D")
 
-const defaultSettings = {
+const DefaultSettingsData = {
     theme: "",
     preferredTranslation: "kjv",
     bookSlug: "prov",
@@ -11,4 +11,4 @@ const defaultSettings = {
     allowCache: false,
 }
 
-export default defaultSettings
+export default DefaultSettingsData

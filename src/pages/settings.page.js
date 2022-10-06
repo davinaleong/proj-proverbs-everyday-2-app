@@ -1,13 +1,18 @@
 import React from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faSave, faRotateLeft, faTrashAlt } from "@fortawesome/free-solid-svg-icons"
+import {
+  faSave,
+  faRotateLeft,
+  faTrashAlt,
+} from "@fortawesome/free-solid-svg-icons"
 
 import ModalComponent from "../components/modal.component"
 
-import config from "../data/config.data"
-import themes from "../data/themes.data"
-import preferredTranslations from "../data/preferred-translations.data"
-import textSizes from "../data/text-sizes.data"
+import ConfigData from "../data/config.data"
+import ThemesData from "../data/themes.data"
+import PreferredTranslationsData from "../data/preferred-translations.data"
+import TextSizesData from "../data/text-sizes.data"
+import AllowCachesData from "../data/allow-caches.data"
 
 export default class SettingsPage extends React.Component {
   constructor(props) {
@@ -17,10 +22,10 @@ export default class SettingsPage extends React.Component {
     const { theme, preferredTranslation, textSize, allowCache } = settings
 
     this.state = {
-      toggleModal: true,
-      theme: theme,
-      preferredTranslation: preferredTranslation,
-      textSize: textSize,
+      toggleModal: false,
+      theme,
+      preferredTranslation,
+      textSize,
       allowCache,
     }
   }
@@ -44,6 +49,12 @@ export default class SettingsPage extends React.Component {
     })
   }
 
+  allowCacheChangeHandler = (e) => {
+    this.setState({
+      allowCache: e.target.value,
+    })
+  }
+
   saveClickHandler = (e) => {
     const { theme, preferredTranslation, textSize, allowCache } = this.state
     this.props.saveClickHandler(
@@ -55,16 +66,19 @@ export default class SettingsPage extends React.Component {
   }
 
   resetClickHandler = (e) => {
+    const { theme, preferredTranslation, textSize, allowCache } =
+      this.props.defaultSettings
     this.setState({
-      theme: this.props.defaultSettings.theme,
-      preferredTranslation: this.props.defaultSettings.preferredTranslation,
-      textSize: this.props.defaultSettings.textSize,
+      theme,
+      preferredTranslation,
+      textSize,
+      allowCache,
     })
   }
 
   removeClickHandler = (e) => {
     console.log(`Remove cached settings.`)
-    window.localStorage.removeItem(config.cacheKey)
+    window.localStorage.removeItem(ConfigData.cacheKey)
   }
 
   // Modal click handlers
@@ -114,8 +128,15 @@ export default class SettingsPage extends React.Component {
   }
 
   render = () => {
-    const { toggleModal, theme, preferredTranslation, textSize, allowCache } = this.state
-    const note = allowCache ? (<p>Settings will be saved to your browser's cache when "Save" is clicked.</p>) : <></>
+    const { toggleModal, theme, preferredTranslation, textSize, allowCache } =
+      this.state
+    const note = allowCache ? (
+      <p>
+        Settings will be saved to your browser's cache when "Save" is clicked.
+      </p>
+    ) : (
+      <></>
+    )
 
     return (
       <>
@@ -133,7 +154,7 @@ export default class SettingsPage extends React.Component {
               value={theme}
               onChange={this.themeChangeHandler}
             >
-              {this.renderOptions(themes, `t`)}
+              {this.renderOptions(ThemesData, `t`)}
             </select>
           </div>
 
@@ -148,7 +169,7 @@ export default class SettingsPage extends React.Component {
               value={preferredTranslation}
               onChange={this.preferredTranslationChangeHandler}
             >
-              {this.renderOptions(preferredTranslations, `pt`)}
+              {this.renderOptions(PreferredTranslationsData, `pt`)}
             </select>
           </div>
 
@@ -163,7 +184,22 @@ export default class SettingsPage extends React.Component {
               value={textSize}
               onChange={this.textSizeChangeHandler}
             >
-              {this.renderOptions(textSizes, `ts`)}
+              {this.renderOptions(TextSizesData, `ts`)}
+            </select>
+          </div>
+
+          <div className="form-group-flex">
+            <label htmlFor="allowCache" className="form-label">
+              Save to Cache
+            </label>
+            <select
+              name="allowCache"
+              id="allowCache"
+              className="form-input"
+              value={allowCache}
+              onChange={this.allowCacheChangeHandler}
+            >
+              {this.renderOptions(AllowCachesData, `ts`)}
             </select>
           </div>
 

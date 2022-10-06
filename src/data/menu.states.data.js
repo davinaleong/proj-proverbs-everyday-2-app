@@ -1,7 +1,7 @@
-const menuStates = {
+const MenuStates = {
     COLLAPSED: "COLLAPSED",
     OPENED: "OPENED",
     EXPANDED: "EXPANDED"
 }
 
-export default menuStates
+export default MenuStates

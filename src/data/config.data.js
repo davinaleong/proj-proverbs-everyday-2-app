@@ -1,6 +1,6 @@
 const envVars = process.env
 
-const config = {
+const ConfigData = {
   appName: "Proverbs Everyday",
   author: "Davina Leong",
   dateStarted: "2022-09-28",
@@ -20,4 +20,4 @@ const config = {
   cacheKey: "proverbsEverydayV2Settings",
 }
 
-export default config
+export default ConfigData

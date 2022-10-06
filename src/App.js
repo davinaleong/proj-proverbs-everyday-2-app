@@ -2,10 +2,8 @@ import React from "react"
 import { Helmet } from "react-helmet-async"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCog } from "@fortawesome/free-solid-svg-icons"
-import dayjs from "dayjs"
 
-import responses from "./data/responses.data"
-import config from "./data/config.data"
+import ConfigData from "./data/config.data"
 
 import FooterComponent from "./components/footer.component"
 import HeaderComponent from "./components/header.component."
@@ -64,7 +62,7 @@ export default class App extends React.Component {
     const { defaultSettings } = this.props
     const { bookSlug, chapterSlug } = defaultSettings
 
-    const cachedSettings = JSON.parse(window.localStorage.getItem(config.cacheKey))
+    const cachedSettings = JSON.parse(window.localStorage.getItem(ConfigData.cacheKey))
     if (cachedSettings) {
       cachedSettings.chapterSlug = chapterSlug
     }
@@ -259,7 +257,7 @@ export default class App extends React.Component {
     newSettings.allowCache = allowCache
 
     if (allowCache) {
-      window.localStorage.setItem(config.cacheKey, JSON.stringify(newSettings))
+      window.localStorage.setItem(ConfigData.cacheKey, JSON.stringify(newSettings))
     }
 
     if (settings.preferredTranslation !== preferredTranslation) {

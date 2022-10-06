@@ -1,4 +1,4 @@
-const themes = [
+const ThemesData = [
     {
         name: "Default",
         value: ""
@@ -29,4 +29,4 @@ const themes = [
     }
 ]
 
-export default themes
+export default ThemesData

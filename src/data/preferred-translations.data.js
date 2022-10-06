@@ -1,4 +1,4 @@
-const preferredTranslations = [
+const PreferredTranslationsData = [
     {
         name: "King James Version (KJV)",
         value: "kjv"
@@ -9,4 +9,4 @@ const preferredTranslations = [
     }
 ]
 
-export default preferredTranslations
+export default PreferredTranslationsData

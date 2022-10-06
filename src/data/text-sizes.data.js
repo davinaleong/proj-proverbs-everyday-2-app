@@ -1,4 +1,4 @@
-const textSizes = [
+const TextSizesData = [
     {
         name: "Regular",
         value: ""
@@ -9,4 +9,4 @@ const textSizes = [
     }
 ]
 
-export default textSizes
+export default TextSizesData
