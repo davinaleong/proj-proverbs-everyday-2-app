@@ -1,1 +1,1 @@
-/api/\* https://davinas-cms.herokuapp.com/:splat 200
+/api/* https://davinas-cms.herokuapp.com/:splat 200
