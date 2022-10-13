@@ -459,6 +459,31 @@ a:where(:hover, :focus, :focus-within) {
   font-size: size(600);
 }
 
+.btn-fixed::before {
+  content: "Settings";
+  display: block;
+  position: absolute;
+  top: -80%;
+  color: var(--clr-bg);
+  background-color: var(--clr-text);
+  font-size: size(300);
+  padding: spacer(50);
+  border-radius: border-radius(50);
+  box-shadow: box-shadow(400);
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+@media (min-width: 37.5em) {
+  .btn-fixed::before {
+    opacity: 0;
+  }
+  
+  .btn-fixed:where(:hover, :focus, :focus-visible)::before {
+    opacity: 1;
+  }
+}
+
 .btn-link {
   --btn-padding: 0;
   --btn-box-shadow: none;
@@ -615,7 +640,7 @@ a:where(:hover, :focus, :focus-within) {
   font-style: italic;
 }
 
-@media (max-width: 37.5em) {
+@media (max-width: 37.499em) {
   .main-header-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -755,7 +780,7 @@ sub {
   gap: spacer(50) spacer(100);
 }
 
-@media (min-width: 37.5em) {
+@media (min-width: 37.499em) {
   .form-group-flex {
     flex-direction: row;
   }
