@@ -13,7 +13,7 @@ import TranslationsPage from "./pages/translations.page"
 import ChaptersPage from "./pages/chapters.page"
 import SettingsPage from "./pages/settings.page"
 
-import UrlHelper from "./helpers/url.helper"
+// import UrlHelper from "./helpers/url.helper"
 
 import "./styles/main.scss"
 
@@ -33,12 +33,6 @@ export default class App extends React.Component {
 
     this.state = {
       loading: true,
-      meta: {
-        meta_title: "",
-        meta_description: "",
-        meta_author: "",
-        meta_keywords: "",
-      },
       page: {
         previous: "",
         current: pageStates.INDEX,
@@ -51,7 +45,6 @@ export default class App extends React.Component {
         chapterSlug,
         allowCache,
       },
-      translations: [],
       translation: {},
       chapters: [],
       chapter: {},
@@ -60,7 +53,7 @@ export default class App extends React.Component {
 
   componentDidMount = () => {
     const { defaultSettings } = this.props
-    const { bookSlug, chapterSlug } = defaultSettings
+    const { chapterSlug } = defaultSettings
 
     const cachedSettings = JSON.parse(
       window.localStorage.getItem(ConfigData.cacheKey)
@@ -73,67 +66,78 @@ export default class App extends React.Component {
 
     const { preferredTranslation } = settings
 
-    const urls = [
-      UrlHelper.app(),
-      UrlHelper.translations(),
-      UrlHelper.chapters(preferredTranslation, bookSlug),
-    ]
+    // const urls = [
+    //   UrlHelper.app(),
+    //   UrlHelper.translations(),
+    //   UrlHelper.chapters(preferredTranslation, bookSlug),
+    // ]
 
-    Promise.all(urls.map((url) => fetch(url, { mode: "cors" })))
-      .then((response) => Promise.all(response.map((res) => res.json())))
-      .then((results) => {
-        console.log(`Fetched all data.`)
+    // Promise.all(urls.map((url) => fetch(url, { mode: "cors" })))
+    //   .then((response) => Promise.all(response.map((res) => res.json())))
+    //   .then((results) => {
+    //     console.log(`Fetched all data.`)
 
-        const metaResult = results[0]
-        const translationsResult = results[1]
-        const chaptersResult = results[2]
+    //     const metaResult = results[0]
+    //     const translationsResult = results[1]
+    //     const chaptersResult = results[2]
 
-        const { apps } = metaResult
-        let meta = {}
-        if (apps.length > 0) {
-          const app = apps[0]
-          const { meta_title, meta_author, meta_description, meta_keywords } =
-            app
-          meta = {
-            meta_title,
-            meta_author,
-            meta_description,
-            meta_keywords,
-          }
-        }
+    //     const { apps } = metaResult
+    //     let meta = {}
+    //     if (apps.length > 0) {
+    //       const app = apps[0]
+    //       const { meta_title, meta_author, meta_description, meta_keywords } =
+    //         app
+    //       meta = {
+    //         meta_title,
+    //         meta_author,
+    //         meta_description,
+    //         meta_keywords,
+    //       }
+    //     }
 
-        const translations = translationsResult.translations.data
+    //     const translations = translationsResult.translations.data
 
-        let translation = {}
-        if (
-          chaptersResult.translations.length > 0 &&
-          chaptersResult.translations[0]
-        ) {
-          translation = chaptersResult.translations[0]
-        }
+    //     let translation = {}
+    //     if (
+    //       chaptersResult.translations.length > 0 &&
+    //       chaptersResult.translations[0]
+    //     ) {
+    //       translation = chaptersResult.translations[0]
+    //     }
 
-        let chapter = {}
-        if (chaptersResult.chapters && chaptersResult.chapters.length > 0) {
-          chapter = chaptersResult.chapters.filter(
-            (chapter) => chapter.slug === chapterSlug
-          )[0]
-        }
+    //     let chapter = {}
+    //     if (chaptersResult.chapters && chaptersResult.chapters.length > 0) {
+    //       chapter = chaptersResult.chapters.filter(
+    //         (chapter) => chapter.slug === chapterSlug
+    //       )[0]
+    //     }
 
-        this.setState({
-          loading: false,
-          settings,
-          meta,
-          translations,
-          translation,
-          chapters: chaptersResult.chapters,
-          chapter,
-        })
-      })
+    //     this.setState({
+    //       loading: false,
+    //       settings,
+    //       meta,
+    //       translations,
+    //       translation,
+    //       chapters: chaptersResult.chapters,
+    //       chapter,
+    //     })
+    //   })
+
+    const translation = this.getTranslation(preferredTranslation)
+    const { chapters } = translation
+    const chapter = chapters.filter(chapter => chapter.slug === chapterSlug)[0]
+
+    this.setState({
+      loading: false,
+      translation,
+      chapters,
+      chapter
+    })
   }
 
   // Getters
   getTranslation = (translationSlug) => {
-    const { translations } = this.state
+    const { translations } = this.props
     return translations.filter((translation) => {
       return translationSlug === translation.slug
     })[0]
@@ -203,31 +207,45 @@ export default class App extends React.Component {
     this.setState({ loading: true })
     const translation = this.getTranslation(translationSlug)
     const { settings } = this.state
-    const { bookSlug, chapterSlug } = settings
+    // const { bookSlug, chapterSlug } = settings
 
-    const chaptersUrl = UrlHelper.chapters(translationSlug, bookSlug)
-    fetch(chaptersUrl, { mode: "cors" })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(`Fetched chapters`)
+    // const chaptersUrl = UrlHelper.chapters(translationSlug, bookSlug)
+    // fetch(chaptersUrl, { mode: "cors" })
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     console.log(`Fetched chapters`)
 
-        const { chapters } = data
-        let chapter = {}
-        if (chapters && chapters.length > 0) {
-          chapter = chapters.filter(
-            (chapter) => chapter.slug === chapterSlug
-          )[0]
-        }
+    //     const { chapters } = data
+    //     let chapter = {}
+    //     if (chapters && chapters.length > 0) {
+    //       chapter = chapters.filter(
+    //         (chapter) => chapter.slug === chapterSlug
+    //       )[0]
+    //     }
 
-        this.setState({
-          loading: false,
-          translation,
-          chapters,
-          chapter,
-        })
+    //     this.setState({
+    //       loading: false,
+    //       translation,
+    //       chapters,
+    //       chapter,
+    //     })
 
-        this.gotoIndexPage()
-      }) // end fetch
+    //     this.gotoIndexPage()
+    //   }) // end fetch
+
+    const { chapterSlug } = settings
+
+    const { chapters } = translation
+    const chapter = chapters.filter(chapter => chapter.slug === chapterSlug)[0]
+
+    this.setState({
+      loading: false,
+      translation,
+      chapters,
+      chapter,
+    })
+
+    this.gotoIndexPage()
   }
 
   chapterClickHandler = (chapterSlug = "chapter-1") => {
@@ -250,7 +268,7 @@ export default class App extends React.Component {
   ) => {
     this.setState({ loading: true })
     const { settings } = this.state
-    const { bookSlug, chapterSlug } = settings
+    const { chapterSlug } = settings
 
     const newSettings = settings
     newSettings.theme = theme
@@ -268,30 +286,43 @@ export default class App extends React.Component {
     if (settings.preferredTranslation !== preferredTranslation) {
       const translation = this.getTranslation(preferredTranslation)
 
-      const chaptersUrl = UrlHelper.chapters(preferredTranslation, bookSlug)
-      fetch(chaptersUrl, { mode: "cors" })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(`Fetched chapters`)
+      // const chaptersUrl = UrlHelper.chapters(preferredTranslation, bookSlug)
+      // fetch(chaptersUrl, { mode: "cors" })
+      //   .then((response) => response.json())
+      //   .then((data) => {
+      //     console.log(`Fetched chapters`)
 
-          const { chapters } = data
-          let chapter = {}
-          if (chapters && chapters.length > 0) {
-            chapter = chapters.filter(
-              (chapter) => chapter.slug === chapterSlug
-            )[0]
-          }
+      //     const { chapters } = data
+      //     let chapter = {}
+      //     if (chapters && chapters.length > 0) {
+      //       chapter = chapters.filter(
+      //         (chapter) => chapter.slug === chapterSlug
+      //       )[0]
+      //     }
 
-          this.setState({
-            loading: false,
-            settings: newSettings,
-            translation,
-            chapters,
-            chapter,
-          })
+      //     this.setState({
+      //       loading: false,
+      //       settings: newSettings,
+      //       translation,
+      //       chapters,
+      //       chapter,
+      //     })
 
-          this.gotoIndexPage()
-        }) // end fetch
+      //     this.gotoIndexPage()
+      //   }) // end fetch
+
+      const { chapters } = translation
+      const chapter = chapters.filter(chapter => chapter.slug === chapterSlug)[0]
+
+      this.setState({
+        loading: false,
+        settings: newSettings,
+        translation,
+        chapters,
+        chapter,
+      })
+
+      this.gotoIndexPage()
     } else {
       this.setState({
         loading: false,
@@ -303,8 +334,8 @@ export default class App extends React.Component {
   }
 
   renderPage = () => {
-    const { pageStates, defaultSettings } = this.props
-    const { page, settings, translations, translation, chapters, chapter } =
+    const { pageStates, defaultSettings, translations } = this.props
+    const { page, settings, translation, chapters, chapter } =
       this.state
 
     switch (page.current) {
@@ -348,8 +379,10 @@ export default class App extends React.Component {
   }
 
   render = () => {
-    const { loading, meta, settings } = this.state
-    const { meta_title, meta_author, meta_description, meta_keywords } = meta
+    const { config } = this.props
+    const { meta_title, meta_author, meta_description, meta_keywords } = config.meta
+
+    const { loading, settings } = this.state
     const mainClass = `main-grid ${settings.theme}`
 
     const content = loading ? <LoaderIconComponent /> : this.renderPage()

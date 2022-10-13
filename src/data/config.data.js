@@ -10,11 +10,11 @@ const ConfigData = {
     apps: envVars.REACT_APP_API_APPS_URL,
   },
   meta: {
-    metaTitle: "Proverbs Everyday",
-    metaAuthor: "Davina Leong",
-    metaDescription:
+    meta_title: "Proverbs Everyday",
+    meta_author: "Davina Leong",
+    meta_description:
       "Displays the Bible Proverb chapter of the day. Able to view all chapters of the book of Proverbs too.",
-    metaKeywords:
+    meta_keywords:
       "proverbs everyday, proverbs, everyday, daily, bible, jesus, jesus christ, christ, proverb, proverb everyday, christian, reactjs, html, css, sass, scss, html5, css3",
   },
   cacheKey: "proverbsEverydayV2Settings",
