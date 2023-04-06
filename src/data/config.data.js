@@ -1,4 +1,5 @@
 const envVars = process.env
+console.log(envVars)
 
 const ConfigData = {
   appName: "Proverbs Everyday",
@@ -6,8 +7,7 @@ const ConfigData = {
   dateStarted: "2022-09-28",
   slug: "proverbs-everyday",
   apis: {
-    bible: envVars.REACT_APP_API_BIBLE_URL,
-    apps: envVars.REACT_APP_API_APPS_URL,
+    api: envVars.REACT_APP_API_URL,
   },
   meta: {
     meta_title: "Proverbs Everyday",
@@ -19,5 +19,8 @@ const ConfigData = {
   },
   cacheKey: "proverbsEverydayV2Settings",
 }
+
+ConfigData.apis.apps = `${ConfigData.apis.api}misc/apps/`
+ConfigData.apis.bible = `${ConfigData.apis.api}bible/`
 
 export default ConfigData

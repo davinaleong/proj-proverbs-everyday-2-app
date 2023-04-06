@@ -13,7 +13,7 @@ import TranslationsPage from "./pages/translations.page"
 import ChaptersPage from "./pages/chapters.page"
 import SettingsPage from "./pages/settings.page"
 
-// import UrlHelper from "./helpers/url.helper"
+import UrlHelper from "./helpers/url.helper"
 
 import "./styles/main.scss"
 
@@ -65,6 +65,14 @@ export default class App extends React.Component {
     const settings = cachedSettings ? cachedSettings : this.state.settings
 
     const { preferredTranslation } = settings
+
+    console.log(UrlHelper.app())
+    // fetch(UrlHelper.app())
+    //   .then(response => response.json())
+    //   .then(data => {
+    //     console.log(data)
+    //   })
+    //   .catch(error => console.error(error))
 
     // const urls = [
     //   UrlHelper.app(),

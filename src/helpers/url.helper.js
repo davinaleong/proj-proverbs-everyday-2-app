@@ -1,8 +1,8 @@
-import config from "../data/config.data"
+import ConfigData from "../data/config.data"
 
-const appUrl = config.apis.apps
-const appSlug = config.slug
-const bibleUrl = config.apis.bible
+const appUrl = ConfigData.apis.apps
+const appSlug = ConfigData.slug
+const bibleUrl = ConfigData.apis.bible
 
 const apps = () => {
   return appUrl
